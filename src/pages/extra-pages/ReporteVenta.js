@@ -75,23 +75,33 @@ const ReporteVenta = () => {
 
     const columns = [
         {
-            name: 'Fecha Registro',
+            name: 'Fecha',
             selector: (row) => row.fechaRegistro
         },
         {
-            name: 'Numero Venta',
+            name: 'N° Venta',
             selector: (row) => row.numeroDocumento
         },
         {
             name: 'Tipo Documento',
-            selector: (row) => row.tipoDocumento
+            selector: (row) => row.tipoDocumento,
+            customStyles: {
+                cells: {
+                    width: '10px'
+                }
+            }
         },
         {
-            name: 'Documento Cliente',
-            selector: (row) => row.documentoCliente
+            name: 'Cedula',
+            selector: (row) => row.documentoCliente,
+            customStyles: {
+                cells: {
+                    width: '5px'
+                }
+            }
         },
         {
-            name: 'Nombre Cliente',
+            name: 'Cliente',
             selector: (row) => row.nombreCliente
         },
         {
@@ -99,11 +109,11 @@ const ReporteVenta = () => {
             selector: (row) => row.subTotalVenta
         },
         {
-            name: 'Impuesto Total Venta',
+            name: 'Impuesto',
             selector: (row) => row.impuestoTotalVenta
         },
         {
-            name: 'Total Venta',
+            name: 'Total',
             selector: (row) => row.totalVenta
         },
         {

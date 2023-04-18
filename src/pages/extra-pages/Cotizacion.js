@@ -36,6 +36,7 @@ const Cotizacion = () => {
     const [igv, setIgv] = useState(0);
     const [IdCliente, setIdCliente] = useState(0);
     const [ClienteC, setClienteC] = useState(0);
+    const [Stock, setStock] = useState(0);
 
     const reestablecer = () => {
         setTipoDocumento('Boleta');
@@ -85,6 +86,11 @@ const Cotizacion = () => {
     };
 
     const sugerenciaSeleccionada = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        if (suggestion.stock <= 0) {
+            Swal.fire('Alerta', `No dispone de stock para este producto, stock actual es de: ${suggestion.stock}`, 'error');
+            setA_Busqueda('');
+            return;
+        }
         // alert(suggestion.idProducto);
         Swal.fire({
             title: suggestion.marca + ' - ' + suggestion.descripcion,
@@ -100,21 +106,28 @@ const Cotizacion = () => {
             preConfirm: (inputValue) => {
                 if (isNaN(parseFloat(inputValue))) {
                     setA_Busqueda('');
-                    Swal.showValidationMessage('Debe ingresar un valor númerico');
                 } else {
-                    let producto = {
-                        idProducto: suggestion.idProducto,
-                        descripcion: suggestion.descripcion,
-                        cantidad: parseInt(inputValue),
-                        precio: suggestion.precio,
-                        total: suggestion.precio * parseFloat(inputValue)
-                    };
-                    let arrayProductos = [];
-                    arrayProductos.push(...productos);
-                    arrayProductos.push(producto);
+                    if (suggestion.stock < inputValue) {
+                        Swal.fire(
+                            'Alerta',
+                            `No se puede agregar esta cantidad, ya que supera el valor actual que es: ${suggestion.stock}`,
+                            'error'
+                        );
+                    } else {
+                        let producto = {
+                            idProducto: suggestion.idProducto,
+                            descripcion: suggestion.descripcion,
+                            cantidad: parseInt(inputValue),
+                            precio: suggestion.precio,
+                            total: suggestion.precio * parseFloat(inputValue)
+                        };
+                        let arrayProductos = [];
+                        arrayProductos.push(...productos);
+                        arrayProductos.push(producto);
 
-                    setProductos((anterior) => [...anterior, producto]);
-                    calcularTotal(arrayProductos);
+                        setProductos((anterior) => [...anterior, producto]);
+                        calcularTotal(arrayProductos);
+                    }
                 }
             },
             allowOutsideClick: () => !Swal.isLoading()
@@ -152,6 +165,8 @@ const Cotizacion = () => {
     const getSuggestionValueCliente = (sugerencia) => {
         setClienteC(sugerencia.cedula + ' - ' + sugerencia.nombres + ' - ' + sugerencia.apellidos);
         setIdCliente(sugerencia.idCliente);
+        // setA_Clientes([]);
+        // setA_BusquedaCliente('');
         return sugerencia.cedula + ' - ' + sugerencia.nombres + ' - ' + sugerencia.apellidos;
     };
 
@@ -210,13 +225,15 @@ const Cotizacion = () => {
 
         let cotizacion = {
             tipoDocumento: tipoDocumento,
-            idUsuario: 1,
+            idUsuario: token,
+            idCliente: IdCliente,
             subTotal: parseFloat(subTotal),
             igv: parseFloat(igv),
             total: parseFloat(total),
             listaProductos: productos
         };
 
+        console.log(cotizacion);
         const api = fetch('http://localhost:5158/api/cotizacion/Registrar', {
             method: 'POST',
             headers: {
@@ -271,7 +288,8 @@ const Cotizacion = () => {
                                         </Col> */}
                                         <Col sm={12}>
                                             {/* <FormGroup> */}
-                                            <Autosuggest2
+                                            <Autosuggest
+                                                id="idautosuggest2"
                                                 suggestions={a_Clientes}
                                                 onSuggestionsFetchRequested={onSuggestionsFetchRequestedCliente}
                                                 onSuggestionsClearRequested={onSuggestionsClearRequestedCliente}

@@ -1,6 +1,7 @@
 import { Card, CardBody, CardHeader, Col, FormGroup, Input, InputGroup, InputGroupText, Label, Row, Table, Button } from 'reactstrap';
 import Swal from 'sweetalert2';
 import Autosuggest from 'react-autosuggest';
+import Autosuggest2 from 'react-autosuggest';
 import { useContext, useState } from 'react';
 import '../css/Venta.css';
 // import { UserContext } from '../context/UserProvider';
@@ -22,18 +23,22 @@ const Venta = () => {
     const [a_Productos, setA_Productos] = useState([]);
     const [a_Busqueda, setA_Busqueda] = useState('');
 
-    const [documentoCliente, setDocumentoCliente] = useState('');
-    const [nombreCliente, setNombreCliente] = useState('');
+    const [a_Clientes, setA_Clientes] = useState([]);
+    const [a_BusquedaCliente, setA_BusquedaCliente] = useState('');
+
+    // const [documentoCliente, setDocumentoCliente] = useState('');
+    // const [nombreCliente, setNombreCliente] = useState('');
 
     const [tipoDocumento, setTipoDocumento] = useState('Boleta');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
     const [igv, setIgv] = useState(0);
+    const [IdCliente, setIdCliente] = useState(0);
+    const [ClienteC, setClienteC] = useState(0);
+    const [Stock, setStock] = useState(0);
 
     const reestablecer = () => {
-        setDocumentoCliente('');
-        setNombreCliente('');
         setTipoDocumento('Boleta');
         setProductos([]);
         setTotal(0);
@@ -43,11 +48,12 @@ const Venta = () => {
 
     //para obtener la lista de sugerencias
     const onSuggestionsFetchRequested = ({ value }) => {
-        const api = fetch('http://localhost:5158/api/venta/Productos/' + value)
+        const api = fetch('http://localhost:5158/api/Venta/Productos/' + value)
             .then((response) => {
                 return response.ok ? response.json() : Promise.reject(response);
             })
             .then((dataJson) => {
+                console.log(dataJson);
                 setA_Productos(dataJson);
             })
             .catch((error) => {
@@ -80,6 +86,12 @@ const Venta = () => {
     };
 
     const sugerenciaSeleccionada = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        if (suggestion.stock <= 0) {
+            Swal.fire('Alerta', `No dispone de stock para este producto, stock actual es de: ${suggestion.stock}`, 'error');
+            setA_Busqueda('');
+            return;
+        }
+        // alert(suggestion.idProducto);
         Swal.fire({
             title: suggestion.marca + ' - ' + suggestion.descripcion,
             text: 'Ingrese la cantidad',
@@ -94,21 +106,28 @@ const Venta = () => {
             preConfirm: (inputValue) => {
                 if (isNaN(parseFloat(inputValue))) {
                     setA_Busqueda('');
-                    Swal.showValidationMessage('Debe ingresar un valor númerico');
                 } else {
-                    let producto = {
-                        idProducto: suggestion.idProducto,
-                        descripcion: suggestion.descripcion,
-                        cantidad: parseInt(inputValue),
-                        precio: suggestion.precio,
-                        total: suggestion.precio * parseFloat(inputValue)
-                    };
-                    let arrayProductos = [];
-                    arrayProductos.push(...productos);
-                    arrayProductos.push(producto);
+                    if (suggestion.stock < inputValue) {
+                        Swal.fire(
+                            'Alerta',
+                            `No se puede agregar esta cantidad, ya que supera el valor actual que es: ${suggestion.stock}`,
+                            'error'
+                        );
+                    } else {
+                        let producto = {
+                            idProducto: suggestion.idProducto,
+                            descripcion: suggestion.descripcion,
+                            cantidad: parseInt(inputValue),
+                            precio: suggestion.precio,
+                            total: suggestion.precio * parseFloat(inputValue)
+                        };
+                        let arrayProductos = [];
+                        arrayProductos.push(...productos);
+                        arrayProductos.push(producto);
 
-                    setProductos((anterior) => [...anterior, producto]);
-                    calcularTotal(arrayProductos);
+                        setProductos((anterior) => [...anterior, producto]);
+                        calcularTotal(arrayProductos);
+                    }
                 }
             },
             allowOutsideClick: () => !Swal.isLoading()
@@ -119,6 +138,52 @@ const Venta = () => {
                 setA_Busqueda('');
             }
         });
+    };
+
+    //Para Cliente
+    //para obtener la lista de sugerencias
+    const onSuggestionsFetchRequestedCliente = ({ value }) => {
+        const api = fetch('http://localhost:5158/api/Venta/Clientes/' + value)
+            .then((response) => {
+                return response.ok ? response.json() : Promise.reject(response);
+            })
+            .then((dataJson) => {
+                console.log(dataJson);
+                setA_Clientes(dataJson);
+            })
+            .catch((error) => {
+                console.log('No se pudo obtener datos, mayor detalle: ', error);
+            });
+    };
+
+    //funcion que nos permite borrar las sugerencias
+    const onSuggestionsClearRequestedCliente = () => {
+        setA_Clientes([]);
+    };
+
+    //devuelve el texto que se mostrara en la caja de texto del autocomplete cuando seleccionas una sugerencia (item)
+    const getSuggestionValueCliente = (sugerencia) => {
+        setClienteC(sugerencia.cedula + ' - ' + sugerencia.nombres + ' - ' + sugerencia.apellidos);
+        setIdCliente(sugerencia.idCliente);
+        // setA_Clientes([]);
+        // setA_BusquedaCliente('');
+        return sugerencia.cedula + ' - ' + sugerencia.nombres + ' - ' + sugerencia.apellidos;
+    };
+
+    //como se debe mostrar las sugerencias - codigo htmlf
+    const renderSuggestionCliente = (sugerencia) => (
+        <span>{sugerencia.cedula + ' - ' + sugerencia.nombres + ' - ' + sugerencia.apellidos}</span>
+    );
+
+    //evento cuando cambie el valor del texto de busqueda
+    const onChangeCliente = (e, { newValue }) => {
+        setA_BusquedaCliente(newValue);
+    };
+
+    const inputPropsCliente = {
+        placeholder: 'Buscar Cliente',
+        value: a_BusquedaCliente,
+        onChange: onChangeCliente
     };
 
     const eliminarProducto = (id) => {
@@ -139,7 +204,7 @@ const Venta = () => {
                 t = p.total + t;
             });
 
-            st = t / 1.18;
+            st = t / 1.12;
             imp = t - st;
         }
 
@@ -158,23 +223,23 @@ const Venta = () => {
             return;
         }
 
-        let venta = {
-            documentoCliente: documentoCliente,
-            nombreCliente: nombreCliente,
+        let Venta = {
             tipoDocumento: tipoDocumento,
-            idUsuario: 1,
+            idUsuario: token,
+            idCliente: IdCliente,
             subTotal: parseFloat(subTotal),
             igv: parseFloat(igv),
             total: parseFloat(total),
             listaProductos: productos
         };
 
-        const api = fetch('http://localhost:5158/api/venta/Registrar', {
+        console.log(Venta);
+        const api = fetch('http://localhost:5158/api/Venta/Registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(venta)
+            body: JSON.stringify(Venta)
         })
             .then((response) => {
                 return response.ok ? response.json() : Promise.reject(response);
@@ -182,11 +247,11 @@ const Venta = () => {
             .then((dataJson) => {
                 reestablecer();
                 var data = dataJson;
-                Swal.fire('Venta Creada!', 'Numero de venta : ' + data.numeroDocumento, 'success');
+                Swal.fire('Venta Creada!', 'Numero de Venta : ' + data.numeroDocumento, 'success');
             })
             .catch((error) => {
-                Swal.fire('Opps!', 'No se pudo crear la venta', 'error');
-                console.log('No se pudo enviar la venta ', error);
+                Swal.fire('Opps!', 'No se pudo crear la Venta', 'error');
+                console.log('No se pudo enviar la Venta ', error);
             });
     };
 
@@ -201,7 +266,7 @@ const Venta = () => {
                                 <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Cliente</CardHeader>
                                 <CardBody>
                                     <Row>
-                                        <Col sm={6}>
+                                        {/* <Col sm={6}>
                                             <FormGroup>
                                                 <Label>Nro Documento</Label>
                                                 <Input
@@ -220,6 +285,31 @@ const Venta = () => {
                                                     onChange={(e) => setNombreCliente(e.target.value)}
                                                 />
                                             </FormGroup>
+                                        </Col> */}
+                                        <Col sm={12}>
+                                            {/* <FormGroup> */}
+                                            <Autosuggest
+                                                id="idautosuggest2"
+                                                suggestions={a_Clientes}
+                                                onSuggestionsFetchRequested={onSuggestionsFetchRequestedCliente}
+                                                onSuggestionsClearRequested={onSuggestionsClearRequestedCliente}
+                                                getSuggestionValue={getSuggestionValueCliente}
+                                                renderSuggestion={renderSuggestionCliente}
+                                                inputProps={inputPropsCliente}
+                                                // onSuggestionSelected={sugerenciaSeleccionada}
+                                            />
+
+                                            {/* <Autosuggest
+                                                suggestions={a_Productos}
+                                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                                getSuggestionValue={getSuggestionValue}
+                                                renderSuggestion={renderSuggestion}
+                                                inputProps={inputProps}
+                                            /> */}
+                                            {/* </FormGroup> */}
+                                            <Input disabled bsSize="sm" value={ClienteC} />
+                                            <Input disabled bsSize="sm" value={IdCliente} />
                                         </Col>
                                     </Row>
                                 </CardBody>
@@ -244,6 +334,8 @@ const Venta = () => {
                                                     onSuggestionSelected={sugerenciaSeleccionada}
                                                 />
                                             </FormGroup>
+                                            {/* <Input disabled bsSize="sm" value={ClienteC} />
+                                            <Input disabled bsSize="sm" value={IdCliente} /> */}
                                         </Col>
                                     </Row>
                                     <Row>

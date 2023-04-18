@@ -7,7 +7,6 @@ import { Navigate } from 'react-router-dom';
 const modeloProveedor = {
     IdProveedor: 0,
     nombreProveedor: '',
-    razonSocial: '',
     ruc_Cedula: '',
     direccion: '',
     telefono: '',
@@ -69,11 +68,6 @@ const Proveedor = () => {
         {
             name: 'Nombres',
             selector: (row) => row.nombreProveedor,
-            sortable: true
-        },
-        {
-            name: 'Razon Social',
-            selector: (row) => row.razonSocial,
             sortable: true
         },
         {
@@ -229,10 +223,6 @@ const Proveedor = () => {
                     <FormGroup>
                         <Label>Nombre</Label>
                         <Input bsSize="sm" name="nombreProveedor" onChange={handleChange} value={Proveedor.nombreProveedor} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Razón Social</Label>
-                        <Input bsSize="sm" name="razonSocial" onChange={handleChange} value={Proveedor.razonSocial} />
                     </FormGroup>
                     <FormGroup>
                         <Label>Número Documento</Label>

@@ -303,7 +303,7 @@ const Producto = () => {
                         <Col sm={6}>
                             <FormGroup>
                                 <Label>Stock</Label>
-                                <Input bsSize="sm" name="stock" onChange={handleChange} value={producto.stock} type="number" />
+                                <Input disabled bsSize="sm" name="stock" onChange={handleChange} value={producto.stock} type="number" />
                             </FormGroup>
                         </Col>
                         <Col sm={6}>

@@ -1,6 +1,7 @@
 import { Card, CardBody, CardHeader, Col, FormGroup, Input, InputGroup, InputGroupText, Label, Row, Table, Button } from 'reactstrap';
 import Swal from 'sweetalert2';
 import Autosuggest from 'react-autosuggest';
+import Autosuggest2 from 'react-autosuggest';
 import { useContext, useState } from 'react';
 import '../css/Venta.css';
 // import { UserContext } from '../context/UserProvider';
@@ -22,18 +23,22 @@ const Compra = () => {
     const [a_Productos, setA_Productos] = useState([]);
     const [a_Busqueda, setA_Busqueda] = useState('');
 
-    const [documentoCliente, setDocumentoCliente] = useState('');
-    const [nombreCliente, setNombreCliente] = useState('');
+    const [a_Proveedors, setA_Proveedors] = useState([]);
+    const [a_BusquedaProveedor, setA_BusquedaProveedor] = useState('');
+
+    const [documentoProveedor, setDocumentoProveedor] = useState('');
+    const [nombreProveedor, setNombreProveedor] = useState('');
 
     const [tipoDocumento, setTipoDocumento] = useState('Boleta');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
     const [igv, setIgv] = useState(0);
+    const [IdProveedor, setIdProveedor] = useState(0);
+    const [ProveedorC, setProveedorC] = useState(0);
+    const [Stock, setStock] = useState(0);
 
     const reestablecer = () => {
-        setDocumentoCliente('');
-        setNombreCliente('');
         setTipoDocumento('Boleta');
         setProductos([]);
         setTotal(0);
@@ -43,11 +48,12 @@ const Compra = () => {
 
     //para obtener la lista de sugerencias
     const onSuggestionsFetchRequested = ({ value }) => {
-        const api = fetch('http://localhost:5158/api/venta/Productos/' + value)
+        const api = fetch('http://localhost:5158/api/Compra/Productos/' + value)
             .then((response) => {
                 return response.ok ? response.json() : Promise.reject(response);
             })
             .then((dataJson) => {
+                console.log(dataJson);
                 setA_Productos(dataJson);
             })
             .catch((error) => {
@@ -80,6 +86,12 @@ const Compra = () => {
     };
 
     const sugerenciaSeleccionada = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        if (suggestion.stock <= 0) {
+            Swal.fire('Alerta', `No dispone de stock para este producto, stock actual es de: ${suggestion.stock}`, 'error');
+            setA_Busqueda('');
+            return;
+        }
+        // alert(suggestion.idProducto);
         Swal.fire({
             title: suggestion.marca + ' - ' + suggestion.descripcion,
             text: 'Ingrese la cantidad',
@@ -94,21 +106,28 @@ const Compra = () => {
             preConfirm: (inputValue) => {
                 if (isNaN(parseFloat(inputValue))) {
                     setA_Busqueda('');
-                    Swal.showValidationMessage('Debe ingresar un valor númerico');
                 } else {
-                    let producto = {
-                        idProducto: suggestion.idProducto,
-                        descripcion: suggestion.descripcion,
-                        cantidad: parseInt(inputValue),
-                        precio: suggestion.precio,
-                        total: suggestion.precio * parseFloat(inputValue)
-                    };
-                    let arrayProductos = [];
-                    arrayProductos.push(...productos);
-                    arrayProductos.push(producto);
+                    if (suggestion.stock < inputValue) {
+                        Swal.fire(
+                            'Alerta',
+                            `No se puede agregar esta cantidad, ya que supera el valor actual que es: ${suggestion.stock}`,
+                            'error'
+                        );
+                    } else {
+                        let producto = {
+                            idProducto: suggestion.idProducto,
+                            descripcion: suggestion.descripcion,
+                            cantidad: parseInt(inputValue),
+                            precio: suggestion.precio,
+                            total: suggestion.precio * parseFloat(inputValue)
+                        };
+                        let arrayProductos = [];
+                        arrayProductos.push(...productos);
+                        arrayProductos.push(producto);
 
-                    setProductos((anterior) => [...anterior, producto]);
-                    calcularTotal(arrayProductos);
+                        setProductos((anterior) => [...anterior, producto]);
+                        calcularTotal(arrayProductos);
+                    }
                 }
             },
             allowOutsideClick: () => !Swal.isLoading()
@@ -119,6 +138,50 @@ const Compra = () => {
                 setA_Busqueda('');
             }
         });
+    };
+
+    //Para Proveedor
+    //para obtener la lista de sugerencias
+    const onSuggestionsFetchRequestedProveedor = ({ value }) => {
+        const api = fetch('http://localhost:5158/api/Compra/Proveedor/' + value)
+            .then((response) => {
+                return response.ok ? response.json() : Promise.reject(response);
+            })
+            .then((dataJson) => {
+                console.log(dataJson);
+                setA_Proveedors(dataJson);
+            })
+            .catch((error) => {
+                console.log('No se pudo obtener datos, mayor detalle: ', error);
+            });
+    };
+
+    //funcion que nos permite borrar las sugerencias
+    const onSuggestionsClearRequestedProveedor = () => {
+        setA_Proveedors([]);
+    };
+
+    //devuelve el texto que se mostrara en la caja de texto del autocomplete cuando seleccionas una sugerencia (item)
+    const getSuggestionValueProveedor = (sugerencia) => {
+        setProveedorC(sugerencia.ruc_Cedula + ' - ' + sugerencia.nombreProveedor);
+        setIdProveedor(sugerencia.idProveedor);
+        // setA_Proveedors([]);
+        // setA_BusquedaProveedor('');
+        return sugerencia.ruc_Cedula + ' - ' + sugerencia.nombreProveedor;
+    };
+
+    //como se debe mostrar las sugerencias - codigo htmlf
+    const renderSuggestionProveedor = (sugerencia) => <span>{sugerencia.ruc_Cedula + ' - ' + sugerencia.nombreProveedor}</span>;
+
+    //evento cuando cambie el valor del texto de busqueda
+    const onChangeProveedor = (e, { newValue }) => {
+        setA_BusquedaProveedor(newValue);
+    };
+
+    const inputPropsProveedor = {
+        placeholder: 'Buscar Proveedor',
+        value: a_BusquedaProveedor,
+        onChange: onChangeProveedor
     };
 
     const eliminarProducto = (id) => {
@@ -139,7 +202,7 @@ const Compra = () => {
                 t = p.total + t;
             });
 
-            st = t / 1.18;
+            st = t / 1.12;
             imp = t - st;
         }
 
@@ -152,29 +215,29 @@ const Compra = () => {
         setTotal(t.toFixed(2));
     };
 
-    const terminarVenta = () => {
+    const terminarCompra = () => {
         if (productos.length < 1) {
             Swal.fire('Opps!', 'No existen productos', 'error');
             return;
         }
 
-        let venta = {
-            documentoCliente: documentoCliente,
-            nombreCliente: nombreCliente,
+        let Compra = {
             tipoDocumento: tipoDocumento,
-            idUsuario: 1,
+            idUsuario: token,
+            idProveedor: IdProveedor,
             subTotal: parseFloat(subTotal),
             igv: parseFloat(igv),
             total: parseFloat(total),
             listaProductos: productos
         };
 
-        const api = fetch('http://localhost:5158/api/venta/Registrar', {
+        console.log(Compra);
+        const api = fetch('http://localhost:5158/api/Compra/Registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(venta)
+            body: JSON.stringify(Compra)
         })
             .then((response) => {
                 return response.ok ? response.json() : Promise.reject(response);
@@ -182,11 +245,11 @@ const Compra = () => {
             .then((dataJson) => {
                 reestablecer();
                 var data = dataJson;
-                Swal.fire('Venta Creada!', 'Numero de venta : ' + data.numeroDocumento, 'success');
+                Swal.fire('Compra Creada!', 'Numero de Compra : ' + data.numeroDocumento, 'success');
             })
             .catch((error) => {
-                Swal.fire('Opps!', 'No se pudo crear la venta', 'error');
-                console.log('No se pudo enviar la venta ', error);
+                Swal.fire('Opps!', 'No se pudo crear la Compra', 'error');
+                console.log('No se pudo enviar la Compra ', error);
             });
     };
 
@@ -198,16 +261,16 @@ const Compra = () => {
                     <Row className="mb-2">
                         <Col sm={12}>
                             <Card>
-                                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Cliente</CardHeader>
+                                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Proveedor</CardHeader>
                                 <CardBody>
                                     <Row>
-                                        <Col sm={6}>
+                                        {/* <Col sm={6}>
                                             <FormGroup>
                                                 <Label>Nro Documento</Label>
                                                 <Input
                                                     bsSize="sm"
-                                                    value={documentoCliente}
-                                                    onChange={(e) => setDocumentoCliente(e.target.value)}
+                                                    value={documentoProveedor}
+                                                    onChange={(e) => setDocumentoProveedor(e.target.value)}
                                                 />
                                             </FormGroup>
                                         </Col>
@@ -216,10 +279,35 @@ const Compra = () => {
                                                 <Label>Nombre</Label>
                                                 <Input
                                                     bsSize="sm"
-                                                    value={nombreCliente}
-                                                    onChange={(e) => setNombreCliente(e.target.value)}
+                                                    value={nombreProveedor}
+                                                    onChange={(e) => setNombreProveedor(e.target.value)}
                                                 />
                                             </FormGroup>
+                                        </Col> */}
+                                        <Col sm={12}>
+                                            {/* <FormGroup> */}
+                                            <Autosuggest
+                                                id="idautosuggest2"
+                                                suggestions={a_Proveedors}
+                                                onSuggestionsFetchRequested={onSuggestionsFetchRequestedProveedor}
+                                                onSuggestionsClearRequested={onSuggestionsClearRequestedProveedor}
+                                                getSuggestionValue={getSuggestionValueProveedor}
+                                                renderSuggestion={renderSuggestionProveedor}
+                                                inputProps={inputPropsProveedor}
+                                                // onSuggestionSelected={sugerenciaSeleccionada}
+                                            />
+
+                                            {/* <Autosuggest
+                                                suggestions={a_Productos}
+                                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                                getSuggestionValue={getSuggestionValue}
+                                                renderSuggestion={renderSuggestion}
+                                                inputProps={inputProps}
+                                            /> */}
+                                            {/* </FormGroup> */}
+                                            <Input disabled bsSize="sm" value={ProveedorC} />
+                                            <Input disabled bsSize="sm" value={IdProveedor} />
                                         </Col>
                                     </Row>
                                 </CardBody>
@@ -244,6 +332,8 @@ const Compra = () => {
                                                     onSuggestionSelected={sugerenciaSeleccionada}
                                                 />
                                             </FormGroup>
+                                            {/* <Input disabled bsSize="sm" value={ProveedorC} />
+                                            <Input disabled bsSize="sm" value={IdProveedor} /> */}
                                         </Col>
                                     </Row>
                                     <Row>
@@ -346,8 +436,8 @@ const Compra = () => {
                         <Col sm={12}>
                             <Card>
                                 <CardBody>
-                                    <Button color="success" block onClick={terminarVenta}>
-                                        <i className="fas fa-money-check"></i> Terminar Venta
+                                    <Button color="success" block onClick={terminarCompra}>
+                                        <i className="fas fa-money-check"></i> Terminar Compra
                                     </Button>
                                 </CardBody>
                             </Card>
