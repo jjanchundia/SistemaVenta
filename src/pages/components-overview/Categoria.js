@@ -91,7 +91,7 @@ const Categoria = () => {
             cell: (row) => (
                 <>
                     <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="bi bi-calculator"></i>
+                        <i className="bi bi-calculator"></i>Editar
                     </Button>
 
                     <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarCategoria(row.idCategoria)}>

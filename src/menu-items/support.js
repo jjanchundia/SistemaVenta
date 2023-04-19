@@ -43,10 +43,38 @@ const support = {
             icon: icons.QuestionOutlined
         },
         {
+            id: 'historialCompra',
+            title: 'Historial Compra',
+            type: 'item',
+            url: '/historialCompra',
+            icon: icons.QuestionOutlined
+        },
+        {
+            id: 'reporteCompra',
+            title: 'Reporte Compra',
+            type: 'item',
+            url: '/reporteCompra',
+            icon: icons.QuestionOutlined
+        },
+        {
             id: 'cotizacion',
             title: 'Cotización',
             type: 'item',
             url: '/Cotizacion',
+            icon: icons.QuestionOutlined
+        },
+        {
+            id: 'historialCotizacion',
+            title: 'Historial Cotización',
+            type: 'item',
+            url: '/historialCotizacion',
+            icon: icons.QuestionOutlined
+        },
+        {
+            id: 'reporteCotizacion',
+            title: 'Reporte Cotización',
+            type: 'item',
+            url: '/reporteCotizacion',
             icon: icons.QuestionOutlined
         }
     ]

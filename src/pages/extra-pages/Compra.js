@@ -86,11 +86,11 @@ const Compra = () => {
     };
 
     const sugerenciaSeleccionada = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-        if (suggestion.stock <= 0) {
-            Swal.fire('Alerta', `No dispone de stock para este producto, stock actual es de: ${suggestion.stock}`, 'error');
-            setA_Busqueda('');
-            return;
-        }
+        // if (suggestion.stock <= 0) {
+        //     Swal.fire('Alerta', `No dispone de stock para este producto, stock actual es de: ${suggestion.stock}`, 'error');
+        //     setA_Busqueda('');
+        //     return;
+        // }
         // alert(suggestion.idProducto);
         Swal.fire({
             title: suggestion.marca + ' - ' + suggestion.descripcion,
@@ -107,27 +107,19 @@ const Compra = () => {
                 if (isNaN(parseFloat(inputValue))) {
                     setA_Busqueda('');
                 } else {
-                    if (suggestion.stock < inputValue) {
-                        Swal.fire(
-                            'Alerta',
-                            `No se puede agregar esta cantidad, ya que supera el valor actual que es: ${suggestion.stock}`,
-                            'error'
-                        );
-                    } else {
-                        let producto = {
-                            idProducto: suggestion.idProducto,
-                            descripcion: suggestion.descripcion,
-                            cantidad: parseInt(inputValue),
-                            precio: suggestion.precio,
-                            total: suggestion.precio * parseFloat(inputValue)
-                        };
-                        let arrayProductos = [];
-                        arrayProductos.push(...productos);
-                        arrayProductos.push(producto);
+                    let producto = {
+                        idProducto: suggestion.idProducto,
+                        descripcion: suggestion.descripcion,
+                        cantidad: parseInt(inputValue),
+                        precio: suggestion.precio,
+                        total: suggestion.precio * parseFloat(inputValue)
+                    };
+                    let arrayProductos = [];
+                    arrayProductos.push(...productos);
+                    arrayProductos.push(producto);
 
-                        setProductos((anterior) => [...anterior, producto]);
-                        calcularTotal(arrayProductos);
-                    }
+                    setProductos((anterior) => [...anterior, producto]);
+                    calcularTotal(arrayProductos);
                 }
             },
             allowOutsideClick: () => !Swal.isLoading()

@@ -115,11 +115,11 @@ const Usuario = () => {
             cell: (row) => (
                 <>
                     <Button color="primary" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="fas fa-pen-alt"></i>
+                        <i className="fas fa-pen-alt"></i>Editar
                     </Button>
 
                     <Button color="danger" size="sm" onClick={() => eliminarUsuario(row.idUsuario)}>
-                        <i className="fas fa-trash-alt"></i>
+                        <i className="fas fa-trash-alt"></i> Eliminar
                     </Button>
                 </>
             )

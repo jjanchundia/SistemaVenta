@@ -70,6 +70,14 @@ const utilities = {
             url: '/Proveedor',
             icon: icons.AntDesignOutlined,
             breadcrumbs: false
+        },
+        {
+            id: 'ant-icons5',
+            title: 'Inventario',
+            type: 'item',
+            url: '/Inventario',
+            icon: icons.AntDesignOutlined,
+            breadcrumbs: false
         }
     ]
 };

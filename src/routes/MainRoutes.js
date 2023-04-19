@@ -5,9 +5,14 @@ import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
 import HistorialVenta from 'pages/extra-pages/HistorialVenta';
 import ReporteVenta from 'pages/extra-pages/ReporteVenta';
+import HistorialCotizacion from 'pages/extra-pages/HistorialCotizacion';
 import Marca from 'pages/components-overview/Marca';
 import Compra from 'pages/extra-pages/Compra';
 import Cotizacion from 'pages/extra-pages/Cotizacion';
+import HistorialCompra from 'pages/extra-pages/HistorialCompra';
+import ReporteCompra from 'pages/extra-pages/ReporteCompra';
+import ReporteCotizacion from 'pages/extra-pages/ReporteCotizacion';
+import Inventario from 'pages/extra-pages/Inventario';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -55,12 +60,28 @@ const MainRoutes = {
             element: <Compra />
         },
         {
+            path: 'historialCompra',
+            element: <HistorialCompra />
+        },
+        {
+            path: 'reporteCompra',
+            element: <ReporteCompra />
+        },
+        {
             path: 'cotizacion',
             element: <Cotizacion />
         },
         {
+            path: 'reporteCotizacion',
+            element: <ReporteCotizacion />
+        },
+        {
             path: 'historialVenta',
             element: <HistorialVenta />
+        },
+        {
+            path: 'historialCotizacion',
+            element: <HistorialCotizacion />
         },
         {
             path: 'reporteVenta',
@@ -69,6 +90,10 @@ const MainRoutes = {
         {
             path: 'producto',
             element: <Producto />
+        },
+        {
+            path: 'inventario',
+            element: <Inventario />
         },
         {
             path: 'usuario',

@@ -17,7 +17,6 @@ import {
 } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
-import Marca from './Marca';
 
 const modeloProducto = {
     idProducto: 0,
@@ -31,7 +30,7 @@ const modeloProducto = {
     esActivo: true
 };
 
-const Producto = () => {
+const Inventario = () => {
     let token = sessionStorage.getItem('token');
     const [producto, setProducto] = useState(modeloProducto);
     const [pendiente, setPendiente] = useState(true);
@@ -118,29 +117,25 @@ const Producto = () => {
             cell: (row) => row.idCategoriaNavigation.descripcion
         },
         {
-            name: 'Estado',
-            selector: (row) => row.esActivo,
+            name: 'Stock',
+            selector: (row) => row.stock,
             sortable: true,
-            cell: (row) => {
-                let clase;
-                clase = row.esActivo ? 'badge badge-info p-2' : 'badge badge-danger p-2';
-                return <span className={clase}>{row.esActivo ? 'Activo' : 'No Activo'}</span>;
-            }
-        },
-        {
-            name: '',
-            cell: (row) => (
-                <>
-                    <Button color="primary" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="fas fa-pen-alt"></i>Editar
-                    </Button>
-
-                    <Button color="danger" size="sm" onClick={() => eliminarProducto(row.idProducto)}>
-                        <i className="fas fa-trash-alt"></i>Eliminar
-                    </Button>
-                </>
-            )
+            cell: (row) => row.stock
         }
+        // {
+        //     name: '',
+        //     cell: (row) => (
+        //         <>
+        //             <Button color="primary" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
+        //                 <i className="fas fa-pen-alt"></i>
+        //             </Button>
+
+        //             <Button color="danger" size="sm" onClick={() => eliminarProducto(row.idProducto)}>
+        //                 <i className="fas fa-trash-alt"></i>
+        //             </Button>
+        //         </>
+        //     )
+        // }
     ];
 
     const customStyles = {
@@ -232,11 +227,11 @@ const Producto = () => {
         <>
             {!token && <Navigate to="/login" />}
             <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Productos</CardHeader>
+                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Inventario de Productos</CardHeader>
                 <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                    {/* <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
                         Nuevo Producto
-                    </Button>
+                    </Button> */}
                     <hr></hr>
                     <DataTable
                         columns={columns}
@@ -338,4 +333,4 @@ const Producto = () => {
     );
 };
 
-export default Producto;
+export default Inventario;
