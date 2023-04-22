@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React, { useMemo } from 'react';
 import MaterialReactTable from 'material-react-table';
 import {
@@ -34,6 +34,7 @@ import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
 import { TableBody } from '../../../node_modules/@mui/material/index';
+import { compact } from 'lodash';
 
 // avatar style
 const avatarSX = {
@@ -67,135 +68,135 @@ const status = [
         label: 'This Year'
     }
 ];
-const data = [
-    {
-        name: {
-            firstName: 'John',
-            lastName: 'Doe'
-        },
-        address: '261 Erdman Ford',
-        city: 'East Daphne',
-        state: 'Kentucky'
-    },
-    {
-        name: {
-            firstName: 'Jane',
-            lastName: 'Doe'
-        },
-        address: '769 Dominic Grove',
-        city: 'Columbus',
-        state: 'Ohio'
-    },
-    {
-        name: {
-            firstName: 'Joe',
-            lastName: 'Doe'
-        },
-        address: '566 Brakus Inlet',
-        city: 'South Linda',
-        state: 'West Virginia'
-    },
-    {
-        name: {
-            firstName: 'Kevin',
-            lastName: 'Vandy'
-        },
-        address: '722 Emie Stream',
-        city: 'Lincoln',
-        state: 'Nebraska'
-    },
-    {
-        name: {
-            firstName: 'Joshua',
-            lastName: 'Rolluffs'
-        },
-        address: '32188 Larkin Turnpike',
-        city: 'Charleston',
-        state: 'South Carolina'
-    }
-];
+// const data = [
+//     {
+//         name: {
+//             firstName: 'John',
+//             lastName: 'Doe'
+//         },
+//         address: '261 Erdman Ford',
+//         city: 'East Daphne',
+//         state: 'Kentucky'
+//     },
+//     {
+//         name: {
+//             firstName: 'Jane',
+//             lastName: 'Doe'
+//         },
+//         address: '769 Dominic Grove',
+//         city: 'Columbus',
+//         state: 'Ohio'
+//     },
+//     {
+//         name: {
+//             firstName: 'Joe',
+//             lastName: 'Doe'
+//         },
+//         address: '566 Brakus Inlet',
+//         city: 'South Linda',
+//         state: 'West Virginia'
+//     },
+//     {
+//         name: {
+//             firstName: 'Kevin',
+//             lastName: 'Vandy'
+//         },
+//         address: '722 Emie Stream',
+//         city: 'Lincoln',
+//         state: 'Nebraska'
+//     },
+//     {
+//         name: {
+//             firstName: 'Joshua',
+//             lastName: 'Rolluffs'
+//         },
+//         address: '32188 Larkin Turnpike',
+//         city: 'Charleston',
+//         state: 'South Carolina'
+//     }
+// ];
 //nested data is ok, see accessorKeys in ColumnDef below
-const datas = [
-    {
-        name: {
-            firstName: 'John',
-            lastName: 'Doe'
-        },
-        address: '261 Erdman Ford',
-        city: 'East Daphne',
-        state: 'Kentucky'
-    },
-    {
-        name: {
-            firstName: 'Jane',
-            lastName: 'Doe'
-        },
-        address: '769 Dominic Grove',
-        city: 'Columbus',
-        state: 'Ohio'
-    },
-    {
-        name: {
-            firstName: 'Joe',
-            lastName: 'Doe'
-        },
-        address: '566 Brakus Inlet',
-        city: 'South Linda',
-        state: 'West Virginia'
-    },
-    {
-        name: {
-            firstName: 'Kevin',
-            lastName: 'Vandy'
-        },
-        address: '722 Emie Stream',
-        city: 'Lincoln',
-        state: 'Nebraska'
-    },
-    {
-        name: {
-            firstName: 'Joshua',
-            lastName: 'Rolluffs'
-        },
-        address: '32188 Larkin Turnpike',
-        city: 'Charleston',
-        state: 'South Carolina'
-    }
-];
-const headCells = [
-    {
-        id: 'trackingNo',
-        align: 'left',
-        disablePadding: false,
-        label: 'Tracking No.'
-    },
-    {
-        id: 'name',
-        align: 'left',
-        disablePadding: true,
-        label: 'Product Name'
-    },
-    {
-        id: 'fat',
-        align: 'right',
-        disablePadding: false,
-        label: 'Total Order'
-    },
-    {
-        id: 'carbs',
-        align: 'left',
-        disablePadding: false,
+// const datas = [
+//     {
+//         name: {
+//             firstName: 'John',
+//             lastName: 'Doe'
+//         },
+//         address: '261 Erdman Ford',
+//         city: 'East Daphne',
+//         state: 'Kentucky'
+//     },
+//     {
+//         name: {
+//             firstName: 'Jane',
+//             lastName: 'Doe'
+//         },
+//         address: '769 Dominic Grove',
+//         city: 'Columbus',
+//         state: 'Ohio'
+//     },
+//     {
+//         name: {
+//             firstName: 'Joe',
+//             lastName: 'Doe'
+//         },
+//         address: '566 Brakus Inlet',
+//         city: 'South Linda',
+//         state: 'West Virginia'
+//     },
+//     {
+//         name: {
+//             firstName: 'Kevin',
+//             lastName: 'Vandy'
+//         },
+//         address: '722 Emie Stream',
+//         city: 'Lincoln',
+//         state: 'Nebraska'
+//     },
+//     {
+//         name: {
+//             firstName: 'Joshua',
+//             lastName: 'Rolluffs'
+//         },
+//         address: '32188 Larkin Turnpike',
+//         city: 'Charleston',
+//         state: 'South Carolina'
+//     }
+// ];
+// const headCells = [
+//     {
+//         id: 'trackingNo',
+//         align: 'left',
+//         disablePadding: false,
+//         label: 'Tracking No.'
+//     },
+//     {
+//         id: 'name',
+//         align: 'left',
+//         disablePadding: true,
+//         label: 'Product Name'
+//     },
+//     {
+//         id: 'fat',
+//         align: 'right',
+//         disablePadding: false,
+//         label: 'Total Order'
+//     },
+//     {
+//         id: 'carbs',
+//         align: 'left',
+//         disablePadding: false,
 
-        label: 'Status'
-    },
-    {
-        id: 'protein',
-        align: 'right',
-        disablePadding: false,
-        label: 'Total Amount'
-    }
-];
-console.log(headCells);
+//         label: 'Status'
+//     },
+//     {
+//         id: 'protein',
+//         align: 'right',
+//         disablePadding: false,
+//         label: 'Total Amount'
+//     }
+// ];
+// console.log(headCells);
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 const DashboardDefault = () => {
@@ -227,6 +228,49 @@ const DashboardDefault = () => {
         ],
         []
     );
+    const [Producto, setProducto] = useState(0);
+    const [Compras, setCompras] = useState(0);
+    const [Ventas, setVentas] = useState(0);
+    const [Usuarios, setUsuarios] = useState(0);
+    const cantidadProductos = async () => {
+        let response = await fetch('http://localhost:5158/api/dashboard/Productos');
+        if (response.ok) {
+            let data = await response.json();
+            setProducto(data);
+        }
+    };
+
+    const cantidadCompras = async () => {
+        let response = await fetch('http://localhost:5158/api/dashboard/Compras');
+        if (response.ok) {
+            let data = await response.json();
+            setCompras(data);
+        }
+    };
+
+    const cantidadVentas = async () => {
+        let response = await fetch('http://localhost:5158/api/dashboard/Ventas');
+        if (response.ok) {
+            let data = await response.json();
+            setVentas(data);
+        }
+    };
+
+    const cantidadUsuarios = async () => {
+        let response = await fetch('http://localhost:5158/api/dashboard/Usuarios');
+        if (response.ok) {
+            let data = await response.json();
+            setUsuarios(data);
+        }
+    };
+
+    useEffect(() => {
+        cantidadProductos();
+        cantidadCompras();
+        cantidadUsuarios();
+        cantidadVentas();
+    }, []);
+
     return (
         <>
             {!token && <Navigate to="/login" />}
@@ -247,27 +291,21 @@ const DashboardDefault = () => {
                     ))}
                 </TableRow>
             </TableHead> */}
-                <Grid item xs={12} sx={{ mb: -2.25 }}>
-                    <Typography variant="h5">Dashboard</Typography>
-                    <MaterialReactTable columns={columns} data={data} />
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <AnalyticEcommerce title="Total Usuarios" count={Usuarios} percentage={70.5} extra="8,900" />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <AnalyticEcommerce title="Total Page Views" count="4,42,236" percentage={59.3} extra="35,000" />
+                    <AnalyticEcommerce title="Total de Productos" count={Producto} percentage={59.3} extra={'35,000'} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <AnalyticEcommerce title="Total Users" count="78,250" percentage={70.5} extra="8,900" />
+                    <AnalyticEcommerce title="Total de Compras" count={Compras} percentage={27.4} isLoss color="warning" extra="1,943" />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <AnalyticEcommerce title="Total Order" count="18,800" percentage={27.4} isLoss color="warning" extra="1,943" />
+                    <AnalyticEcommerce title="Total de Ventas" count={Ventas} percentage={27.4} isLoss color="warning" extra="$20,395" />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <AnalyticEcommerce title="Total Sales" count="$35,078" percentage={27.4} isLoss color="warning" extra="$20,395" />
-                </Grid>
-
                 <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
-
                 {/* row 2 */}
-                <Grid item xs={12} md={7} lg={8}>
+                {/* <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Unique Visitor</Typography>
@@ -298,8 +336,8 @@ const DashboardDefault = () => {
                             <IncomeAreaChart slot={slot} />
                         </Box>
                     </MainCard>
-                </Grid>
-                <Grid item xs={12} md={5} lg={4}>
+                </Grid> */}
+                {/* <Grid item xs={12} md={5} lg={4}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Income Overview</Typography>
@@ -317,10 +355,9 @@ const DashboardDefault = () => {
                         </Box>
                         <MonthlyBarChart />
                     </MainCard>
-                </Grid>
-
+                </Grid> */}
                 {/* row 3 */}
-                <Grid item xs={12} md={7} lg={8}>
+                {/* <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Recent Orders</Typography>
@@ -328,8 +365,8 @@ const DashboardDefault = () => {
                         <Grid item />
                     </Grid>
                     <MainCard sx={{ mt: 2 }} content={false}></MainCard>
-                </Grid>
-                <Grid item xs={12} md={5} lg={4}>
+                </Grid> */}
+                {/* <Grid item xs={12} md={5} lg={4}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Analytics Report</Typography>
@@ -353,10 +390,9 @@ const DashboardDefault = () => {
                         </List>
                         <ReportAreaChart />
                     </MainCard>
-                </Grid>
-
+                </Grid> */}
                 {/* row 4 */}
-                <Grid item xs={12} md={7} lg={8}>
+                {/* <Grid item xs={12} md={7} lg={8}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Sales Report</Typography>
@@ -387,15 +423,15 @@ const DashboardDefault = () => {
                         </Stack>
                         <SalesColumnChart />
                     </MainCard>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} md={5} lg={4}>
-                    <Grid container alignItems="center" justifyContent="space-between">
+                    {/* <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h5">Transaction History</Typography>
                         </Grid>
                         <Grid item />
-                    </Grid>
-                    <MainCard sx={{ mt: 2 }} content={false}>
+                    </Grid> */}
+                    {/* <MainCard sx={{ mt: 2 }} content={false}>
                         <List
                             component="nav"
                             sx={{
@@ -487,8 +523,8 @@ const DashboardDefault = () => {
                                 </ListItemSecondaryAction>
                             </ListItemButton>
                         </List>
-                    </MainCard>
-                    <MainCard sx={{ mt: 2 }}>
+                    </MainCard> */}
+                    {/* <MainCard sx={{ mt: 2 }}>
                         <Stack spacing={3}>
                             <Grid container justifyContent="space-between" alignItems="center">
                                 <Grid item>
@@ -514,7 +550,7 @@ const DashboardDefault = () => {
                                 Need Help?
                             </Button>
                         </Stack>
-                    </MainCard>
+                    </MainCard> */}
                 </Grid>
             </Grid>
         </>

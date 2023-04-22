@@ -76,6 +76,13 @@ const support = {
             type: 'item',
             url: '/reporteCotizacion',
             icon: icons.QuestionOutlined
+        },
+        {
+            id: 'ventaCredito',
+            title: 'Ventas a Crédito',
+            type: 'item',
+            url: '/ventaCredito',
+            icon: icons.QuestionOutlined
         }
     ]
 };

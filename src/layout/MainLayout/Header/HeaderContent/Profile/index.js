@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -54,10 +56,14 @@ function a11yProps(index) {
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 const Profile = () => {
+    const history = useNavigate();
     const theme = useTheme();
 
     const handleLogout = async () => {
         // logout
+        sessionStorage.clear();
+        window.location.reload();
+        history('/');
     };
 
     const anchorRef = useRef(null);

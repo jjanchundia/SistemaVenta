@@ -33,6 +33,13 @@ const utilities = {
             icon: icons.FontSizeOutlined
         },
         {
+            id: 'util-typography2',
+            title: 'Roles',
+            type: 'item',
+            url: '/Rol',
+            icon: icons.FontSizeOutlined
+        },
+        {
             id: 'ant-icons1',
             title: 'Marca',
             type: 'item',

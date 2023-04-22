@@ -13,6 +13,8 @@ import HistorialCompra from 'pages/extra-pages/HistorialCompra';
 import ReporteCompra from 'pages/extra-pages/ReporteCompra';
 import ReporteCotizacion from 'pages/extra-pages/ReporteCotizacion';
 import Inventario from 'pages/extra-pages/Inventario';
+import VentaCredito from 'pages/extra-pages/VentaCredito';
+import Rol from 'pages/components-overview/Rol';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -54,6 +56,10 @@ const MainRoutes = {
         {
             path: 'venta',
             element: <Venta />
+        },
+        {
+            path: 'ventaCredito',
+            element: <VentaCredito />
         },
         {
             path: 'compra',
@@ -98,6 +104,10 @@ const MainRoutes = {
         {
             path: 'usuario',
             element: <Usuario />
+        },
+        {
+            path: 'rol',
+            element: <Rol />
         },
         {
             path: 'categoria',

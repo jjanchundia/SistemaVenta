@@ -4,42 +4,42 @@ import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBod
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
 
-const modeloMarca = {
-    idMarca: 0,
-    nombreMarca: '',
+const modeloRol = {
+    idRol: 0,
+    descripcion: '',
     esActivo: true
 };
 
-const Marca = () => {
+const Rol = () => {
     let token = sessionStorage.getItem('token');
-    const [Marca, setMarca] = useState(modeloMarca);
+    const [Rol, setRol] = useState(modeloRol);
     const [pendiente, setPendiente] = useState(true);
-    const [Marcas, setMarcas] = useState([]);
+    const [Rols, setRols] = useState([]);
     const [verModal, setVerModal] = useState(false);
 
     const handleChange = (e) => {
         let value = e.target.nodeName === 'SELECT' ? (e.target.value == 'true' ? true : false) : e.target.value;
 
-        setMarca({
-            ...Marca,
+        setRol({
+            ...Rol,
             [e.target.name]: value
         });
     };
 
-    const obtenerMarcas = async () => {
-        let response = await fetch('http://localhost:5158/api/Marca/Lista');
+    const obtenerRols = async () => {
+        let response = await fetch('http://localhost:5158/api/Rol/Lista');
 
         if (response.ok) {
             let data = await response.json();
-            setMarcas(data);
+            setRols(data);
             setPendiente(false);
         }
-        console.log(Marcas);
+        console.log(Rols);
     };
 
     useEffect(() => {
-        obtenerMarcas();
-        console.log(Marcas);
+        obtenerRols();
+        console.log(Rols);
     }, []);
 
     const style2 = {
@@ -63,8 +63,8 @@ const Marca = () => {
 
     const columns = [
         {
-            name: 'Nombre Marca',
-            selector: (row) => row.nombreMarca,
+            name: 'Descripcion',
+            selector: (row) => row.descripcion,
             sortable: true
         },
         {
@@ -94,7 +94,7 @@ const Marca = () => {
                         <i className="bi bi-calculator"></i>Editar
                     </Button>
 
-                    <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarMarca(row.idMarca)}>
+                    <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarRol(row.idRol)}>
                         <i className="fas fa-trash-alt"></i>Eliminar
                     </Button>
                 </>
@@ -124,48 +124,48 @@ const Marca = () => {
     };
 
     const abrirEditarModal = (data) => {
-        setMarca(data);
+        setRol(data);
         setVerModal(!verModal);
     };
 
     const cerrarModal = () => {
-        setMarca(modeloMarca);
+        setRol(modeloRol);
         setVerModal(!verModal);
     };
 
     const guardarCambios = async () => {
         let response;
-        if (Marca.idMarca == 0) {
-            response = await fetch('http://localhost:5158/api/Marca/Guardar', {
+        if (Rol.idRol == 0) {
+            response = await fetch('http://localhost:5158/api/Rol/Guardar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify(Marca)
+                body: JSON.stringify(Rol)
             });
         } else {
-            response = await fetch('http://localhost:5158/api/Marca/Editar', {
+            response = await fetch('http://localhost:5158/api/Rol/Editar', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify(Marca)
+                body: JSON.stringify(Rol)
             });
         }
 
         if (response.ok) {
-            await obtenerMarcas();
-            setMarca(modeloMarca);
+            await obtenerRols();
+            setRol(modeloRol);
             setVerModal(!verModal);
         } else {
             alert('error al guardar');
         }
     };
 
-    const eliminarMarca = async (id) => {
+    const eliminarRol = async (id) => {
         Swal.fire({
             title: 'Esta seguro?',
-            text: 'Desesa eliminar esta Marca',
+            text: 'Desesa eliminar esta Rol',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -174,10 +174,10 @@ const Marca = () => {
             cancelButtonText: 'No, volver'
         }).then((result) => {
             if (result.isConfirmed) {
-                const response = fetch('http://localhost:5158/api/Marca/Eliminar/' + id, { method: 'DELETE' }).then((response) => {
+                const response = fetch('http://localhost:5158/api/Rol/Eliminar/' + id, { method: 'DELETE' }).then((response) => {
                     if (response.ok) {
-                        obtenerMarcas();
-                        Swal.fire('Eliminado!', 'La Marca fue eliminada.', 'success');
+                        obtenerRols();
+                        Swal.fire('Eliminado!', 'El Rol fue eliminado.', 'success');
                     }
                 });
             }
@@ -200,15 +200,15 @@ const Marca = () => {
         <>
             {!token && <Navigate to="/login" />}
             <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Marcas</CardHeader>
+                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Roles</CardHeader>
                 <CardBody>
                     <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nueva Marca
+                        Nueva Rol
                     </Button>
                     <hr></hr>
                     <DataTable
                         columns={columns}
-                        data={Marcas}
+                        data={Rols}
                         progressPending={pendiente}
                         pagination
                         paginationComponentOptions={paginationComponentOptions}
@@ -218,15 +218,15 @@ const Marca = () => {
             </Card>
 
             <Modal style={style} isOpen={verModal}>
-                <ModalHeader>Detalle Marca</ModalHeader>
+                <ModalHeader>Detalle Rol</ModalHeader>
                 <ModalBody>
                     <FormGroup>
-                        <Label>Nombre</Label>
-                        <Input bsSize="sm" name="nombreMarca" onChange={handleChange} value={Marca.nombreMarca} />
+                        <Label>Descripción</Label>
+                        <Input bsSize="sm" name="descripcion" onChange={handleChange} value={Rol.descripcion} />
                     </FormGroup>
                     <FormGroup>
                         <Label>Estado</Label>
-                        <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Marca.esActivo}>
+                        <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Rol.esActivo}>
                             <option value={true}>Activo</option>
                             <option value={false}>No Activo</option>
                         </Input>
@@ -245,4 +245,4 @@ const Marca = () => {
     );
 };
 
-export default Marca;
+export default Rol;
