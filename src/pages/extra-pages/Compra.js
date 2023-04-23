@@ -26,17 +26,13 @@ const Compra = () => {
     const [a_Proveedors, setA_Proveedors] = useState([]);
     const [a_BusquedaProveedor, setA_BusquedaProveedor] = useState('');
 
-    const [documentoProveedor, setDocumentoProveedor] = useState('');
-    const [nombreProveedor, setNombreProveedor] = useState('');
-
     const [tipoDocumento, setTipoDocumento] = useState('Boleta');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
     const [igv, setIgv] = useState(0);
     const [IdProveedor, setIdProveedor] = useState(0);
-    const [ProveedorC, setProveedorC] = useState(0);
-    const [Stock, setStock] = useState(0);
+    const [ProveedorC, setProveedorC] = useState();
 
     const reestablecer = () => {
         setTipoDocumento('Boleta');
@@ -288,18 +284,8 @@ const Compra = () => {
                                                 inputProps={inputPropsProveedor}
                                                 // onSuggestionSelected={sugerenciaSeleccionada}
                                             />
-
-                                            {/* <Autosuggest
-                                                suggestions={a_Productos}
-                                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                                getSuggestionValue={getSuggestionValue}
-                                                renderSuggestion={renderSuggestion}
-                                                inputProps={inputProps}
-                                            /> */}
-                                            {/* </FormGroup> */}
                                             <Input disabled bsSize="sm" value={ProveedorC} />
-                                            <Input disabled bsSize="sm" value={IdProveedor} />
+                                            <Input disabled hidden bsSize="sm" value={IdProveedor} />
                                         </Col>
                                     </Row>
                                 </CardBody>
@@ -324,8 +310,6 @@ const Compra = () => {
                                                     onSuggestionSelected={sugerenciaSeleccionada}
                                                 />
                                             </FormGroup>
-                                            {/* <Input disabled bsSize="sm" value={ProveedorC} />
-                                            <Input disabled bsSize="sm" value={IdProveedor} /> */}
                                         </Col>
                                     </Row>
                                     <Row>

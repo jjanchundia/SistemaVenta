@@ -26,17 +26,13 @@ const Venta = () => {
     const [a_Clientes, setA_Clientes] = useState([]);
     const [a_BusquedaCliente, setA_BusquedaCliente] = useState('');
 
-    // const [documentoCliente, setDocumentoCliente] = useState('');
-    // const [nombreCliente, setNombreCliente] = useState('');
-
     const [tipoDocumento, setTipoDocumento] = useState('Boleta');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
     const [igv, setIgv] = useState(0);
     const [IdCliente, setIdCliente] = useState(0);
-    const [ClienteC, setClienteC] = useState(0);
-    const [Stock, setStock] = useState(0);
+    const [ClienteC, setClienteC] = useState();
 
     const reestablecer = () => {
         setTipoDocumento('Boleta');
@@ -91,7 +87,7 @@ const Venta = () => {
             setA_Busqueda('');
             return;
         }
-        // alert(suggestion.idProducto);
+
         Swal.fire({
             title: suggestion.marca + ' - ' + suggestion.descripcion,
             text: 'Ingrese la cantidad',
@@ -298,18 +294,8 @@ const Venta = () => {
                                                 inputProps={inputPropsCliente}
                                                 // onSuggestionSelected={sugerenciaSeleccionada}
                                             />
-
-                                            {/* <Autosuggest
-                                                suggestions={a_Productos}
-                                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                                getSuggestionValue={getSuggestionValue}
-                                                renderSuggestion={renderSuggestion}
-                                                inputProps={inputProps}
-                                            /> */}
-                                            {/* </FormGroup> */}
                                             <Input disabled bsSize="sm" value={ClienteC} />
-                                            <Input disabled bsSize="sm" value={IdCliente} />
+                                            <Input disabled hidden bsSize="sm" value={IdCliente} />
                                         </Col>
                                     </Row>
                                 </CardBody>
@@ -334,8 +320,6 @@ const Venta = () => {
                                                     onSuggestionSelected={sugerenciaSeleccionada}
                                                 />
                                             </FormGroup>
-                                            {/* <Input disabled bsSize="sm" value={ClienteC} />
-                                            <Input disabled bsSize="sm" value={IdCliente} /> */}
                                         </Col>
                                     </Row>
                                     <Row>

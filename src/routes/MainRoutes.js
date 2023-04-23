@@ -15,6 +15,7 @@ import ReporteCotizacion from 'pages/extra-pages/ReporteCotizacion';
 import Inventario from 'pages/extra-pages/Inventario';
 import VentaCredito from 'pages/extra-pages/VentaCredito';
 import Rol from 'pages/components-overview/Rol';
+import Pagos from 'pages/extra-pages/Pagos';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -60,6 +61,10 @@ const MainRoutes = {
         {
             path: 'ventaCredito',
             element: <VentaCredito />
+        },
+        {
+            path: 'pagos',
+            element: <Pagos />
         },
         {
             path: 'compra',

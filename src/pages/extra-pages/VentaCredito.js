@@ -35,10 +35,10 @@ const VentaCredito = () => {
     const [subTotal, setSubTotal] = useState(0);
     const [igv, setIgv] = useState(0);
     const [IdCliente, setIdCliente] = useState(0);
-    const [ClienteC, setClienteC] = useState(0);
-    const [Stock, setStock] = useState(0);
+    const [ClienteC, setClienteC] = useState();
     const [CantidadMeses, setCantidadMeses] = useState(0);
-    const [Descuento, setDescuento] = useState(0);
+    const [CuotaInicial, setCuotaInicial] = useState(0);
+    const [CuotaMensual, setCuotaMensual] = useState(0);
 
     const reestablecer = () => {
         setTipoDocumento('Boleta');
@@ -46,6 +46,10 @@ const VentaCredito = () => {
         setTotal(0);
         setSubTotal(0);
         setIgv(0);
+        setIdCliente(0);
+        setCantidadMeses(0);
+        setCuotaInicial(0);
+        setCuotaMensual(0);
     };
 
     //para obtener la lista de sugerencias
@@ -232,6 +236,9 @@ const VentaCredito = () => {
             subTotal: parseFloat(subTotal),
             igv: parseFloat(igv),
             total: parseFloat(total),
+            cantidadMeses: CantidadMeses,
+            cuotaInicial: CuotaInicial,
+            cuotaMensual: CuotaMensual,
             listaProductos: productos
         };
 
@@ -249,10 +256,10 @@ const VentaCredito = () => {
             .then((dataJson) => {
                 reestablecer();
                 var data = dataJson;
-                Swal.fire('VentaCredito Creada!', 'Numero de VentaCredito : ' + data.numeroDocumento, 'success');
+                Swal.fire('Venta a Credito Creada!', 'Numero de Venta a Credito : ' + data.numeroDocumento, 'success');
             })
             .catch((error) => {
-                Swal.fire('Opps!', 'No se pudo crear la VentaCredito', 'error');
+                Swal.fire('Opps!', 'No se pudo crear la Venta a Credito', 'error');
                 console.log('No se pudo enviar la VentaCredito ', error);
             });
     };
@@ -260,6 +267,16 @@ const VentaCredito = () => {
     const handleChange = (e) => {
         let value = e.target.nodeName === 'SELECT' ? (e.target.value == 'true' ? true : false) : e.target.value;
         setCantidadMeses(value);
+        let cuotaMensual = total / value;
+        setCuotaMensual(cuotaMensual.toFixed(2));
+    };
+
+    const handleChangeCuotaMensual = (e) => {
+        let value = e.target.nodeName === 'SELECT' ? (e.target.value == 'true' ? true : false) : e.target.value;
+        debugger;
+        setCuotaInicial(value);
+        let cuotaMensual = (total - value) / CantidadMeses;
+        setCuotaMensual(cuotaMensual.toFixed(2));
     };
 
     return (
@@ -273,28 +290,7 @@ const VentaCredito = () => {
                                 <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Cliente</CardHeader>
                                 <CardBody>
                                     <Row>
-                                        {/* <Col sm={6}>
-                                            <FormGroup>
-                                                <Label>Nro Documento</Label>
-                                                <Input
-                                                    bsSize="sm"
-                                                    value={documentoCliente}
-                                                    onChange={(e) => setDocumentoCliente(e.target.value)}
-                                                />
-                                            </FormGroup>
-                                        </Col>
-                                        <Col sm={6}>
-                                            <FormGroup>
-                                                <Label>Nombre</Label>
-                                                <Input
-                                                    bsSize="sm"
-                                                    value={nombreCliente}
-                                                    onChange={(e) => setNombreCliente(e.target.value)}
-                                                />
-                                            </FormGroup>
-                                        </Col> */}
                                         <Col sm={12}>
-                                            {/* <FormGroup> */}
                                             <Autosuggest
                                                 id="idautosuggest2"
                                                 suggestions={a_Clientes}
@@ -306,17 +302,8 @@ const VentaCredito = () => {
                                                 // onSuggestionSelected={sugerenciaSeleccionada}
                                             />
 
-                                            {/* <Autosuggest
-                                                suggestions={a_Productos}
-                                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                                                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                                getSuggestionValue={getSuggestionValue}
-                                                renderSuggestion={renderSuggestion}
-                                                inputProps={inputProps}
-                                            /> */}
-                                            {/* </FormGroup> */}
                                             <Input disabled bsSize="sm" value={ClienteC} />
-                                            <Input disabled bsSize="sm" value={IdCliente} />
+                                            <Input disabled hidden bsSize="sm" value={IdCliente} />
                                         </Col>
                                     </Row>
                                 </CardBody>
@@ -341,8 +328,6 @@ const VentaCredito = () => {
                                                     onSuggestionSelected={sugerenciaSeleccionada}
                                                 />
                                             </FormGroup>
-                                            {/* <Input disabled bsSize="sm" value={ClienteC} />
-                                            <Input disabled bsSize="sm" value={IdCliente} /> */}
                                         </Col>
                                     </Row>
                                     <Row>
@@ -424,15 +409,6 @@ const VentaCredito = () => {
                                                     onChange={handleChange}
                                                     value={CantidadMeses}
                                                 />
-                                                {/* onChange={handleChange} */}
-                                            </InputGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mb-2">
-                                        <Col sm={12}>
-                                            <InputGroup size="sm">
-                                                <InputGroupText>Descuento:</InputGroupText>
-                                                <Input bsSize="sm" value={Descuento} onChange={(e) => setDescuento(e.target.value)} />
                                             </InputGroup>
                                         </Col>
                                     </Row>
@@ -440,7 +416,7 @@ const VentaCredito = () => {
                                         <Col sm={12}>
                                             <InputGroup size="sm">
                                                 <InputGroupText>Cuota Inicial:</InputGroupText>
-                                                <Input value={subTotal} />
+                                                <Input name="cuotaInicial" value={CuotaInicial} onChange={handleChangeCuotaMensual} />
                                             </InputGroup>
                                         </Col>
                                     </Row>
@@ -448,7 +424,7 @@ const VentaCredito = () => {
                                         <Col sm={12}>
                                             <InputGroup size="sm">
                                                 <InputGroupText>Cuota Mensual:</InputGroupText>
-                                                <Input value={subTotal} />
+                                                <Input value={CuotaMensual} onChange={(e) => setCuotaMensual(e.target.value)} />
                                             </InputGroup>
                                         </Col>
                                     </Row>

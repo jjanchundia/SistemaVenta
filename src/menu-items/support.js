@@ -83,6 +83,13 @@ const support = {
             type: 'item',
             url: '/ventaCredito',
             icon: icons.QuestionOutlined
+        },
+        {
+            id: 'pagos',
+            title: 'Pagos',
+            type: 'item',
+            url: '/pagos',
+            icon: icons.QuestionOutlined
         }
     ]
 };
