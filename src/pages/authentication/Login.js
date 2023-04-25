@@ -1,12 +1,10 @@
-import { Link } from 'react-router-dom';
-
 // material-ui
 import { Grid, Stack, Typography } from '@mui/material';
 
 // project import
 import AuthLogin from './auth-forms/AuthLogin';
 import AuthWrapper from './AuthWrapper';
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserContext } from '../context/UserProvider';
 import Swal from 'sweetalert2';
 import { useNavigate, Navigate } from 'react-router-dom';
@@ -47,6 +45,7 @@ const Login = () => {
                     const tokenRecibido = dataJson.idUsuario;
                     // localStorage.setItem("token", tokenRecibido); se cambia
                     sessionStorage.setItem('token', tokenRecibido);
+                    sessionStorage.setItem('UsuarioLogin', dataJson.idRol);
                     history('/');
                 }
             })
@@ -55,15 +54,16 @@ const Login = () => {
                 Swal.fire('Opps!', 'No se pudo iniciar sessión', 'error');
             });
     };
+
     return (
         <AuthWrapper>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
                         <Typography variant="h3">Login</Typography>
-                        <Typography component={Link} to="/register" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
+                        {/* <Typography component={Link} to="/register" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
                             Don&apos;t have an account?
-                        </Typography>
+                        </Typography> */}
                     </Stack>
                 </Grid>
                 <Grid item xs={12}>

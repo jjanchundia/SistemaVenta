@@ -273,7 +273,6 @@ const VentaCredito = () => {
 
     const handleChangeCuotaMensual = (e) => {
         let value = e.target.nodeName === 'SELECT' ? (e.target.value == 'true' ? true : false) : e.target.value;
-        debugger;
         setCuotaInicial(value);
         let cuotaMensual = (total - value) / CantidadMeses;
         setCuotaMensual(cuotaMensual.toFixed(2));

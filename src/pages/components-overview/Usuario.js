@@ -30,6 +30,7 @@ const modeloUsuario = {
 
 const Usuario = () => {
     let token = sessionStorage.getItem('token');
+    let acceso = sessionStorage.getItem('UsuarioLogin');
     const [usuario, setUsuario] = useState(modeloUsuario);
     const [pendiente, setPendiente] = useState(true);
     const [usuarios, setUsuarios] = useState([]);
@@ -211,92 +212,102 @@ const Usuario = () => {
         });
     };
 
+    const style = {
+        top: '10%'
+    };
+
     return (
         <>
             {!token && <Navigate to="/login" />}
-            <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Usuarios</CardHeader>
-                <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nuevo Usuario
-                    </Button>
-                    <hr></hr>
-                    <DataTable
-                        columns={columns}
-                        data={usuarios}
-                        progressPending={pendiente}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        customStyles={customStyles}
-                    />
-                </CardBody>
-            </Card>
+            {acceso == 1 ? (
+                <div>
+                    <Card>
+                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Usuarios</CardHeader>
+                        <CardBody>
+                            <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                                Nuevo Usuario
+                            </Button>
+                            <hr></hr>
+                            <DataTable
+                                columns={columns}
+                                data={usuarios}
+                                progressPending={pendiente}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                customStyles={customStyles}
+                            />
+                        </CardBody>
+                    </Card>
 
-            <Modal isOpen={verModal}>
-                <ModalHeader>Detalle Usuario</ModalHeader>
-                <ModalBody>
-                    <Row>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Nombre</Label>
-                                <Input bsSize="sm" name="nombre" onChange={handleChange} value={usuario.nombre} />
-                            </FormGroup>
-                        </Col>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Correo</Label>
-                                <Input bsSize="sm" name="correo" onChange={handleChange} value={usuario.correo} />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Telefono</Label>
-                                <Input bsSize="sm" name="telefono" onChange={handleChange} value={usuario.telefono} />
-                            </FormGroup>
-                        </Col>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Rol</Label>
-                                <Input bsSize="sm" type={'select'} name="idRol" onChange={handleChange} value={usuario.idRol}>
-                                    <option value={0}>Seleccionar</option>
-                                    {roles.map((item) => (
-                                        <option key={item.idRol} value={item.idRol}>
-                                            {item.descripcion}
-                                        </option>
-                                    ))}
-                                </Input>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm="6">
-                            <FormGroup>
-                                <Label>Contraseña</Label>
-                                <Input bsSize="sm" name="clave" onChange={handleChange} value={usuario.clave} type="password" />
-                            </FormGroup>
-                        </Col>
-                        <Col sm="6">
-                            <FormGroup>
-                                <Label>Estado</Label>
-                                <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={usuario.esActivo}>
-                                    <option value={true}>Activo</option>
-                                    <option value={false}>No Activo</option>
-                                </Input>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                </ModalBody>
-                <ModalFooter>
-                    <Button size="sm" color="primary" onClick={guardarCambios}>
-                        Guardar
-                    </Button>
-                    <Button size="sm" color="danger" onClick={cerrarModal}>
-                        Cerrar
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                    <Modal style={style} isOpen={verModal}>
+                        <ModalHeader>Detalle Usuario</ModalHeader>
+                        <ModalBody>
+                            <Row>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Nombre</Label>
+                                        <Input bsSize="sm" name="nombre" onChange={handleChange} value={usuario.nombre} />
+                                    </FormGroup>
+                                </Col>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Correo</Label>
+                                        <Input bsSize="sm" name="correo" onChange={handleChange} value={usuario.correo} />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Telefono</Label>
+                                        <Input bsSize="sm" name="telefono" onChange={handleChange} value={usuario.telefono} />
+                                    </FormGroup>
+                                </Col>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Rol</Label>
+                                        <Input bsSize="sm" type={'select'} name="idRol" onChange={handleChange} value={usuario.idRol}>
+                                            <option value={0}>Seleccionar</option>
+                                            {roles.map((item) => (
+                                                <option key={item.idRol} value={item.idRol}>
+                                                    {item.descripcion}
+                                                </option>
+                                            ))}
+                                        </Input>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm="6">
+                                    <FormGroup>
+                                        <Label>Contraseña</Label>
+                                        <Input bsSize="sm" name="clave" onChange={handleChange} value={usuario.clave} type="password" />
+                                    </FormGroup>
+                                </Col>
+                                <Col sm="6">
+                                    <FormGroup>
+                                        <Label>Estado</Label>
+                                        <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={usuario.esActivo}>
+                                            <option value={true}>Activo</option>
+                                            <option value={false}>No Activo</option>
+                                        </Input>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button size="sm" color="primary" onClick={guardarCambios}>
+                                Guardar
+                            </Button>
+                            <Button size="sm" color="danger" onClick={cerrarModal}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            ) : (
+                <Navigate to="/noDisponible" />
+            )}
         </>
     );
 };

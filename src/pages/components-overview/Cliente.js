@@ -16,6 +16,7 @@ const modeloCliente = {
 
 const Cliente = () => {
     let token = sessionStorage.getItem('token');
+    let acceso = sessionStorage.getItem('UsuarioLogin');
     const [Cliente, setCliente] = useState(modeloCliente);
     const [pendiente, setPendiente] = useState(true);
     const [Clientes, setClientes] = useState([]);
@@ -204,64 +205,70 @@ const Cliente = () => {
     return (
         <>
             {!token && <Navigate to="/login" />}
-            <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Clientes</CardHeader>
-                <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nueva Cliente
-                    </Button>
-                    <hr></hr>
-                    <DataTable
-                        columns={columns}
-                        data={Clientes}
-                        progressPending={pendiente}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        customStyles={customStyles}
-                    />
-                </CardBody>
-            </Card>
+            {acceso == 1 ? (
+                <div>
+                    <Card>
+                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Clientes</CardHeader>
+                        <CardBody>
+                            <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                                Nueva Cliente
+                            </Button>
+                            <hr></hr>
+                            <DataTable
+                                columns={columns}
+                                data={Clientes}
+                                progressPending={pendiente}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                customStyles={customStyles}
+                            />
+                        </CardBody>
+                    </Card>
 
-            <Modal style={style} isOpen={verModal}>
-                <ModalHeader>Detalle Cliente</ModalHeader>
-                <ModalBody>
-                    <FormGroup>
-                        <Label>Nombres</Label>
-                        <Input bsSize="sm" name="nombres" onChange={handleChange} value={Cliente.nombres} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Apellidos</Label>
-                        <Input bsSize="sm" name="apellidos" onChange={handleChange} value={Cliente.apellidos} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Cedula</Label>
-                        <Input bsSize="sm" name="cedula" onChange={handleChange} value={Cliente.cedula} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Direccion</Label>
-                        <Input bsSize="sm" name="direccion" onChange={handleChange} value={Cliente.direccion} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Teléfono</Label>
-                        <Input bsSize="sm" name="telefono" onChange={handleChange} value={Cliente.telefono} />
-                    </FormGroup>
-                    {/* <FormGroup>
+                    <Modal style={style} isOpen={verModal}>
+                        <ModalHeader>Detalle Cliente</ModalHeader>
+                        <ModalBody>
+                            <FormGroup>
+                                <Label>Nombres</Label>
+                                <Input bsSize="sm" name="nombres" onChange={handleChange} value={Cliente.nombres} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Apellidos</Label>
+                                <Input bsSize="sm" name="apellidos" onChange={handleChange} value={Cliente.apellidos} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Cedula</Label>
+                                <Input bsSize="sm" name="cedula" onChange={handleChange} value={Cliente.cedula} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Direccion</Label>
+                                <Input bsSize="sm" name="direccion" onChange={handleChange} value={Cliente.direccion} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Teléfono</Label>
+                                <Input bsSize="sm" name="telefono" onChange={handleChange} value={Cliente.telefono} />
+                            </FormGroup>
+                            {/* <FormGroup>
                         <Label>Estado</Label>
                         <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Cliente.esActivo}>
                             <option value={true}>Activo</option>
                             <option value={false}>No Activo</option>
                         </Input>
                     </FormGroup> */}
-                </ModalBody>
-                <ModalFooter>
-                    <Button size="sm" color="primary" onClick={guardarCambios}>
-                        Guardar
-                    </Button>
-                    <Button size="sm" color="danger" onClick={cerrarModal}>
-                        Cerrar
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button size="sm" color="primary" onClick={guardarCambios}>
+                                Guardar
+                            </Button>
+                            <Button size="sm" color="danger" onClick={cerrarModal}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            ) : (
+                <Navigate to="/noDisponible" />
+            )}
         </>
     );
 };

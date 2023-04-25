@@ -33,6 +33,7 @@ const modeloProducto = {
 
 const Producto = () => {
     let token = sessionStorage.getItem('token');
+    let acceso = sessionStorage.getItem('UsuarioLogin');
     const [producto, setProducto] = useState(modeloProducto);
     const [pendiente, setPendiente] = useState(true);
     const [productos, setProductos] = useState([]);
@@ -231,109 +232,134 @@ const Producto = () => {
     return (
         <>
             {!token && <Navigate to="/login" />}
-            <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Productos</CardHeader>
-                <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nuevo Producto
-                    </Button>
-                    <hr></hr>
-                    <DataTable
-                        columns={columns}
-                        data={productos}
-                        progressPending={pendiente}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        customStyles={customStyles}
-                    />
-                </CardBody>
-            </Card>
+            {acceso == 1 ? (
+                <div>
+                    <Card>
+                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Productos</CardHeader>
+                        <CardBody>
+                            <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                                Nuevo Producto
+                            </Button>
+                            <hr></hr>
+                            <DataTable
+                                columns={columns}
+                                data={productos}
+                                progressPending={pendiente}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                customStyles={customStyles}
+                            />
+                        </CardBody>
+                    </Card>
 
-            <Modal style={{ top: '10%' }} isOpen={verModal}>
-                <ModalHeader>Detalle Producto</ModalHeader>
-                <ModalBody>
-                    <Row>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Codigo</Label>
-                                <Input bsSize="sm" name="codigo" onChange={handleChange} value={producto.codigo} />
-                            </FormGroup>
-                        </Col>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Marca</Label>
-                                <Input bsSize="sm" type={'select'} name="idmarca" onChange={handleChange} value={producto.idmarca}>
-                                    <option value={0}>Seleccionar</option>
-                                    {Marcas.map((item) => {
-                                        return (
-                                            <option key={item.idMarca} value={item.idMarca}>
-                                                {item.nombreMarca}
-                                            </option>
-                                        );
-                                    })}
-                                </Input>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Descripcion</Label>
-                                <Input bsSize="sm" name="descripcion" onChange={handleChange} value={producto.descripcion} />
-                            </FormGroup>
-                        </Col>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Categoria</Label>
-                                <Input bsSize="sm" type={'select'} name="idCategoria" onChange={handleChange} value={producto.idCategoria}>
-                                    <option value={0}>Seleccionar</option>
-                                    {categorias.map((item) => {
-                                        if (item.esActivo)
-                                            return (
-                                                <option key={item.idCategoria} value={item.idCategoria}>
-                                                    {item.descripcion}
-                                                </option>
-                                            );
-                                    })}
-                                </Input>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Stock</Label>
-                                <Input disabled bsSize="sm" name="stock" onChange={handleChange} value={producto.stock} type="number" />
-                            </FormGroup>
-                        </Col>
-                        <Col sm={6}>
-                            <FormGroup>
-                                <Label>Precio</Label>
-                                <Input bsSize="sm" name="precio" onChange={handleChange} value={producto.precio} type="number" />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm="6">
-                            <FormGroup>
-                                <Label>Estado</Label>
-                                <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={producto.esActivo}>
-                                    <option value={true}>Activo</option>
-                                    <option value={false}>No Activo</option>
-                                </Input>
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                </ModalBody>
-                <ModalFooter>
-                    <Button size="sm" color="primary" onClick={guardarCambios}>
-                        Guardar
-                    </Button>
-                    <Button size="sm" color="danger" onClick={cerrarModal}>
-                        Cerrar
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                    <Modal style={{ top: '10%' }} isOpen={verModal}>
+                        <ModalHeader>Detalle Producto</ModalHeader>
+                        <ModalBody>
+                            <Row>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Codigo</Label>
+                                        <Input bsSize="sm" name="codigo" onChange={handleChange} value={producto.codigo} />
+                                    </FormGroup>
+                                </Col>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Marca</Label>
+                                        <Input bsSize="sm" type={'select'} name="idmarca" onChange={handleChange} value={producto.idmarca}>
+                                            <option value={0}>Seleccionar</option>
+                                            {Marcas.map((item) => {
+                                                return (
+                                                    <option key={item.idMarca} value={item.idMarca}>
+                                                        {item.nombreMarca}
+                                                    </option>
+                                                );
+                                            })}
+                                        </Input>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Descripcion</Label>
+                                        <Input bsSize="sm" name="descripcion" onChange={handleChange} value={producto.descripcion} />
+                                    </FormGroup>
+                                </Col>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Categoria</Label>
+                                        <Input
+                                            bsSize="sm"
+                                            type={'select'}
+                                            name="idCategoria"
+                                            onChange={handleChange}
+                                            value={producto.idCategoria}
+                                        >
+                                            <option value={0}>Seleccionar</option>
+                                            {categorias.map((item) => {
+                                                if (item.esActivo)
+                                                    return (
+                                                        <option key={item.idCategoria} value={item.idCategoria}>
+                                                            {item.descripcion}
+                                                        </option>
+                                                    );
+                                            })}
+                                        </Input>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Stock</Label>
+                                        <Input
+                                            disabled
+                                            bsSize="sm"
+                                            name="stock"
+                                            onChange={handleChange}
+                                            value={producto.stock}
+                                            type="number"
+                                        />
+                                    </FormGroup>
+                                </Col>
+                                <Col sm={6}>
+                                    <FormGroup>
+                                        <Label>Precio</Label>
+                                        <Input bsSize="sm" name="precio" onChange={handleChange} value={producto.precio} type="number" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm="6">
+                                    <FormGroup>
+                                        <Label>Estado</Label>
+                                        <Input
+                                            bsSize="sm"
+                                            type={'select'}
+                                            name="esActivo"
+                                            onChange={handleChange}
+                                            value={producto.esActivo}
+                                        >
+                                            <option value={true}>Activo</option>
+                                            <option value={false}>No Activo</option>
+                                        </Input>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button size="sm" color="primary" onClick={guardarCambios}>
+                                Guardar
+                            </Button>
+                            <Button size="sm" color="danger" onClick={cerrarModal}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            ) : (
+                <Navigate to="/noDisponible" />
+            )}
         </>
     );
 };

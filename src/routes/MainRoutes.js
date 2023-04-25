@@ -16,6 +16,9 @@ import Inventario from 'pages/extra-pages/Inventario';
 import VentaCredito from 'pages/extra-pages/VentaCredito';
 import Rol from 'pages/components-overview/Rol';
 import Pagos from 'pages/extra-pages/Pagos';
+import PagoConfirmar from 'pages/extra-pages/PagoConfirmar';
+import PagosDetalle from 'pages/extra-pages/PagosDetalle';
+import NoDisponible from 'pages/extra-pages/NoDisponible';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -67,6 +70,14 @@ const MainRoutes = {
             element: <Pagos />
         },
         {
+            path: 'pagoConfirmar',
+            element: <PagoConfirmar />
+        },
+        {
+            path: 'pagoDetalle',
+            element: <PagosDetalle />
+        },
+        {
             path: 'compra',
             element: <Compra />
         },
@@ -102,9 +113,20 @@ const MainRoutes = {
             path: 'producto',
             element: <Producto />
         },
+        sessionStorage.getItem('UsuarioLogin') == 1
+            ? {
+                  path: 'inventario',
+                  element: <Inventario />
+              }
+            : {
+                  path: 'inventario',
+                  element: <NoDisponible />,
+                  authorized: false
+              },
         {
-            path: 'inventario',
-            element: <Inventario />
+            path: 'noDisponible',
+            element: <NoDisponible />,
+            authorized: false
         },
         {
             path: 'usuario',

@@ -309,7 +309,7 @@ const Cotizacion = () => {
                                             /> */}
                                             {/* </FormGroup> */}
                                             <Input disabled bsSize="sm" value={ClienteC} />
-                                            <Input disabled bsSize="sm" value={IdCliente} />
+                                            <Input disabled hidden bsSize="sm" value={IdCliente} />
                                         </Col>
                                     </Row>
                                 </CardBody>

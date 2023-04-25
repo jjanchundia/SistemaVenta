@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
 import Swal from 'sweetalert2';
-import { Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const modeloMarca = {
     idMarca: 0,
@@ -12,6 +12,7 @@ const modeloMarca = {
 
 const Pago = () => {
     let token = sessionStorage.getItem('token');
+    const history = useNavigate();
     const [Marca, setMarca] = useState(modeloMarca);
     const [pendiente, setPendiente] = useState(true);
     const [Pagos, setPagos] = useState([]);
@@ -41,25 +42,6 @@ const Pago = () => {
         obtenerPagos();
         console.log(Pagos);
     }, []);
-
-    const style2 = {
-        position: 'absolute',
-        backgroundColor: 'badge badge-info p-2',
-        width: 60,
-        bgcolor: 'background.paper',
-        border: '2px solid #000000',
-        p: 4
-    };
-
-    const style3 = {
-        position: 'absolute',
-        color: 'badge badge-info p-2',
-        width: 80,
-        bgcolor: 'background.paper',
-        border: '2px solid #ff0000',
-        backgroundColor: 'red',
-        p: 4
-    };
 
     const columns = [
         {
@@ -97,37 +79,55 @@ const Pago = () => {
             selector: (row) => row.valorInicial,
             sortable: true
         },
-        // {
-        //     name: 'Estado',
-        //     selector: (row) => row.esActivo, // == true ? 'Activo' : 'No Activo',
-        //     sortable: true,
-        //     cell: (row) => {
-        //         let clase;
-        //         clase = row.esActivo ? 'badge badge-info p-2' : 'badge badge-danger p-2';
-        //         // return <span className="badge badge-info p-2">{row.esActivo ? 'Activo' : 'No Activo'}</span>;
-        //         return row.esActivo ? (
-        //             <Alert style={{ top: '10%' }} size="md" color="primary">
-        //                 Activo
-        //             </Alert>
-        //         ) : (
-        //             <Alert style={{ top: '10%' }} color="danger">
-        //                 No Activo
-        //             </Alert>
-        //         );
-        //     }
-        // },
+        {
+            name: 'Estado',
+            selector: (row) => row.cuotaPendientes, // == true ? 'Activo' : 'No Activo',
+            sortable: true,
+            maxWidth: '60%',
+            cell: (row) => {
+                // return <span className="badge badge-info p-2">{row.esActivo ? 'Activo' : 'No Activo'}</span>;
+                return row.cuotaPendientes == 0 ? (
+                    <Alert style={{ top: '10%', with: '25%' }} size="md" color="danger">
+                        Al Día
+                    </Alert>
+                ) : (
+                    <Alert style={{ top: '10%', maxWidth: '300%' }} color="primary">
+                        Activa
+                    </Alert>
+                );
+            }
+        },
         {
             name: '',
-            cell: (row) => (
-                <>
-                    <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="bi bi-calculator"></i>Pagar
-                    </Button>
-                    <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarMarca(row.idMarca)}>
-                        <i className="fas fa-trash-alt"></i>Lista Pagos
-                    </Button>
-                </>
-            )
+            // cell: (row) => (
+            //     <>
+            //         <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => abrirEditarModal(row)}>
+            //             <i className="bi bi-calculator"></i>Pagar
+            //         </Button>
+            //         <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarMarca(row.idMarca)}>
+            //             <i className="fas fa-trash-alt"></i>Lista Pagos
+            //         </Button>
+            //     </>
+
+            cell: (row) => {
+                // return <span className="badge badge-info p-2">{row.esActivo ? 'Activo' : 'No Activo'}</span>;
+                return row.cuotaPendientes == 0 ? (
+                    <div>
+                        <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => detallePago(row)}>
+                            <i className="fas fa-trash-alt"></i>Detalle
+                        </Button>
+                    </div>
+                ) : (
+                    <div>
+                        <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => cancelarPago(row)}>
+                            <i className="bi bi-calculator"></i>Pagar
+                        </Button>
+                        <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => detallePago(row)}>
+                            <i className="fas fa-trash-alt"></i>Detalle
+                        </Button>
+                    </div>
+                );
+            }
         }
     ];
 
@@ -152,9 +152,19 @@ const Pago = () => {
         selectAllRowsItemText: 'Todos'
     };
 
-    const abrirEditarModal = (data) => {
-        setMarca(data);
-        setVerModal(!verModal);
+    const cancelarPago = (data) => {
+        console.log(data);
+        // history({
+        //     pathname: '/pagoConfirmar',
+        //     state: { detail: data }
+        // });
+
+        history('/pagoConfirmar', { state: { data: data } });
+    };
+
+    const detallePago = (data) => {
+        console.log(data);
+        history('/pagoDetalle', { state: { data: data } });
     };
 
     const cerrarModal = () => {
