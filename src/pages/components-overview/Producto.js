@@ -17,7 +17,6 @@ import {
 } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
-import Marca from './Marca';
 
 const modeloProducto = {
     idProducto: 0,

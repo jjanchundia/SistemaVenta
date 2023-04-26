@@ -232,6 +232,9 @@ const DashboardDefault = () => {
     const [Compras, setCompras] = useState(0);
     const [Ventas, setVentas] = useState(0);
     const [Usuarios, setUsuarios] = useState(0);
+    const [Ganancias, setGanancias] = useState(0);
+    const [Mes, setMes] = useState('');
+
     const cantidadProductos = async () => {
         let response = await fetch('http://localhost:5158/api/dashboard/Productos');
         if (response.ok) {
@@ -264,11 +267,24 @@ const DashboardDefault = () => {
         }
     };
 
+    const cantidadGanancias = async () => {
+        debugger;
+        let response = await fetch('http://localhost:5158/api/dashboard/VentasPorMes');
+        if (response.ok) {
+            let data = await response.json();
+            const valor = data[0].total;
+            const formatoMoneda = valor.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            setGanancias(formatoMoneda);
+            setMes(data[0].mes);
+        }
+    };
+
     useEffect(() => {
         cantidadProductos();
         cantidadCompras();
         cantidadUsuarios();
         cantidadVentas();
+        cantidadGanancias();
     }, []);
 
     return (
@@ -292,7 +308,7 @@ const DashboardDefault = () => {
                 </TableRow>
             </TableHead> */}
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <AnalyticEcommerce title="Total Usuarios" count={Usuarios} percentage={70.5} extra="8,900" />
+                    <AnalyticEcommerce title="Total Usuarios" count={Usuarios} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
                     <AnalyticEcommerce title="Total de Productos" count={Producto} percentage={59.3} extra={'35,000'} />
@@ -302,6 +318,9 @@ const DashboardDefault = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
                     <AnalyticEcommerce title="Total de Ventas" count={Ventas} percentage={27.4} isLoss color="warning" extra="$20,395" />
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <AnalyticEcommerce title={`Total de Ganancias en Ventas: ${Mes}`} count={Ganancias} />
                 </Grid>
                 <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
                 {/* row 2 */}

@@ -18,11 +18,14 @@ import DatePicker from 'react-datepicker';
 import Swal from 'sweetalert2';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const HistorialCotizacion = () => {
     let token = sessionStorage.getItem('token');
+    const componentRef = useRef();
     const [fechaInicio, setFechaInicio] = useState(new Date());
     const [fechaFin, setFechaFin] = useState(new Date());
     const [nroCotizacion, setNumeroCotizacion] = useState('');
@@ -63,13 +66,9 @@ const HistorialCotizacion = () => {
         setVerModal(!verModal);
     };
 
-    const imprimir = (nombreDiv) => {
-        var contenido = document.getElementById(nombreDiv).innerHTML;
-        var contenidoOriginal = document.body.innerHTML;
-        document.body.innerHTML = contenido;
-        window.print();
-        document.body.innerHTML = contenidoOriginal;
-    };
+    const handlePrinf = useReactToPrint({
+        content: () => componentRef.current
+    });
 
     return (
         <>
@@ -190,7 +189,7 @@ const HistorialCotizacion = () => {
             </Row>
 
             <Modal style={{ top: '10%' }} size="lg" isOpen={verModal}>
-                <div id="imp">
+                <div id="imp" ref={componentRef}>
                     <ModalHeader>Detalle Cotizacion</ModalHeader>
                     <ModalBody>
                         <Row>
@@ -286,9 +285,9 @@ const HistorialCotizacion = () => {
                     </ModalBody>
                 </div>
                 <ModalFooter>
-                    {/* <Button size="sm" color="primary" onClick={() => imprimir('imp')}>
+                    <Button size="sm" color="primary" onClick={handlePrinf}>
                         Imprimir
-                    </Button> */}
+                    </Button>
                     <Button size="sm" color="danger" onClick={() => setVerModal(!verModal)}>
                         Cerrar
                     </Button>

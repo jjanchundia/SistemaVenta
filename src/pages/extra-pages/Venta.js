@@ -26,7 +26,7 @@ const Venta = () => {
     const [a_Clientes, setA_Clientes] = useState([]);
     const [a_BusquedaCliente, setA_BusquedaCliente] = useState('');
 
-    const [tipoDocumento, setTipoDocumento] = useState('Boleta');
+    const [tipoDocumento, setTipoDocumento] = useState('Nota de Ventas');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
@@ -35,7 +35,7 @@ const Venta = () => {
     const [ClienteC, setClienteC] = useState();
 
     const reestablecer = () => {
-        setTipoDocumento('Boleta');
+        setTipoDocumento('Nota de Ventas');
         setProductos([]);
         setTotal(0);
         setSubTotal(0);
@@ -64,11 +64,11 @@ const Venta = () => {
 
     //devuelve el texto que se mostrara en la caja de texto del autocomplete cuando seleccionas una sugerencia (item)
     const getSuggestionValue = (sugerencia) => {
-        return sugerencia.codigo + ' - ' + sugerencia.marca + ' - ' + sugerencia.descripcion;
+        return sugerencia.codigo + ' - ' + ' - ' + sugerencia.descripcion;
     };
 
     //como se debe mostrar las sugerencias - codigo htmlf
-    const renderSuggestion = (sugerencia) => <span>{sugerencia.codigo + ' - ' + sugerencia.marca + ' - ' + sugerencia.descripcion}</span>;
+    const renderSuggestion = (sugerencia) => <span>{sugerencia.codigo + ' - ' + sugerencia.descripcion}</span>;
 
     //evento cuando cambie el valor del texto de busqueda
     const onChange = (e, { newValue }) => {
@@ -384,7 +384,7 @@ const Venta = () => {
                                                     value={tipoDocumento}
                                                     onChange={(e) => setTipoDocumento(e.target.value)}
                                                 >
-                                                    <option value="Boleta">Boleta</option>
+                                                    <option value="Nota de Ventas">Nota de Ventas</option>
                                                     <option value="Factura">Factura</option>
                                                 </Input>
                                             </InputGroup>

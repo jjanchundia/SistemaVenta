@@ -5,7 +5,6 @@ import { Grid, Stack, Typography } from '@mui/material';
 import AuthLogin from './auth-forms/AuthLogin';
 import AuthWrapper from './AuthWrapper';
 import { useEffect, useState } from 'react';
-import { UserContext } from '../context/UserProvider';
 import Swal from 'sweetalert2';
 import { useNavigate, Navigate } from 'react-router-dom';
 

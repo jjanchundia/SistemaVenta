@@ -29,7 +29,7 @@ const Cotizacion = () => {
     const [documentoCliente, setDocumentoCliente] = useState('');
     const [nombreCliente, setNombreCliente] = useState('');
 
-    const [tipoDocumento, setTipoDocumento] = useState('Boleta');
+    const [tipoDocumento, setTipoDocumento] = useState('Nota de Ventas');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
@@ -39,7 +39,7 @@ const Cotizacion = () => {
     const [Stock, setStock] = useState(0);
 
     const reestablecer = () => {
-        setTipoDocumento('Boleta');
+        setTipoDocumento('Nota de Ventas');
         setProductos([]);
         setTotal(0);
         setSubTotal(0);
@@ -400,7 +400,7 @@ const Cotizacion = () => {
                                                     value={tipoDocumento}
                                                     onChange={(e) => setTipoDocumento(e.target.value)}
                                                 >
-                                                    <option value="Boleta">Boleta</option>
+                                                    <option value="Nota de Ventas">Nota de Ventas</option>
                                                     <option value="Factura">Factura</option>
                                                 </Input>
                                             </InputGroup>

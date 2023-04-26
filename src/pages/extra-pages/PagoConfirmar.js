@@ -11,7 +11,7 @@ const PagoConfirmar = () => {
 
     let token = sessionStorage.getItem('token');
 
-    const [tipoDocumento, setTipoDocumento] = useState('Boleta');
+    const [tipoDocumento, setTipoDocumento] = useState('Nota de Ventas');
     const [CantidadMeses, setCantidadMeses] = useState(0);
     const [TotalPagarM, setTotalPagarM] = useState(0);
 
@@ -133,7 +133,7 @@ const PagoConfirmar = () => {
                                                     value={tipoDocumento}
                                                     onChange={(e) => setTipoDocumento(e.target.value)}
                                                 >
-                                                    <option value="Boleta">Boleta</option>
+                                                    <option value="Nota de Ventas">Nota de Ventas</option>
                                                     <option value="Factura">Factura</option>
                                                 </Input>
                                             </InputGroup>

@@ -30,14 +30,16 @@ const utilities = {
             title: 'Usuarios',
             type: 'item',
             url: '/Usuario',
-            icon: icons.FontSizeOutlined
+            icon: icons.FontSizeOutlined,
+            breadcrumbs: false
         },
         {
             id: 'util-typography2',
             title: 'Roles',
             type: 'item',
             url: '/Rol',
-            icon: icons.FontSizeOutlined
+            icon: icons.FontSizeOutlined,
+            breadcrumbs: false
         },
         {
             id: 'ant-icons1',
@@ -52,7 +54,8 @@ const utilities = {
             title: 'Producto',
             type: 'item',
             url: '/Producto',
-            icon: icons.BarcodeOutlined
+            icon: icons.BarcodeOutlined,
+            breadcrumbs: false
         },
         {
             id: 'ant-icons2',

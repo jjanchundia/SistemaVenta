@@ -12,6 +12,7 @@ const modeloMarca = {
 
 const Marca = () => {
     let token = sessionStorage.getItem('token');
+    let acceso = sessionStorage.getItem('UsuarioLogin');
     const [Marca, setMarca] = useState(modeloMarca);
     const [pendiente, setPendiente] = useState(true);
     const [Marcas, setMarcas] = useState([]);
@@ -41,25 +42,6 @@ const Marca = () => {
         obtenerMarcas();
         console.log(Marcas);
     }, []);
-
-    const style2 = {
-        position: 'absolute',
-        backgroundColor: 'badge badge-info p-2',
-        width: 60,
-        bgcolor: 'background.paper',
-        border: '2px solid #000000',
-        p: 4
-    };
-
-    const style3 = {
-        position: 'absolute',
-        color: 'badge badge-info p-2',
-        width: 80,
-        bgcolor: 'background.paper',
-        border: '2px solid #ff0000',
-        backgroundColor: 'red',
-        p: 4
-    };
 
     const columns = [
         {
@@ -191,48 +173,54 @@ const Marca = () => {
     return (
         <>
             {!token && <Navigate to="/login" />}
-            <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Marcas</CardHeader>
-                <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nueva Marca
-                    </Button>
-                    <hr></hr>
-                    <DataTable
-                        columns={columns}
-                        data={Marcas}
-                        progressPending={pendiente}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        customStyles={customStyles}
-                    />
-                </CardBody>
-            </Card>
+            {acceso == 1 ? (
+                <div>
+                    <Card>
+                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Marcas</CardHeader>
+                        <CardBody>
+                            <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                                Nueva Marca
+                            </Button>
+                            <hr></hr>
+                            <DataTable
+                                columns={columns}
+                                data={Marcas}
+                                progressPending={pendiente}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                customStyles={customStyles}
+                            />
+                        </CardBody>
+                    </Card>
 
-            <Modal style={style} isOpen={verModal}>
-                <ModalHeader>Detalle Marca</ModalHeader>
-                <ModalBody>
-                    <FormGroup>
-                        <Label>Nombre</Label>
-                        <Input bsSize="sm" name="nombreMarca" onChange={handleChange} value={Marca.nombreMarca} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Estado</Label>
-                        <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Marca.esActivo}>
-                            <option value={true}>Activo</option>
-                            <option value={false}>No Activo</option>
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button size="sm" color="primary" onClick={guardarCambios}>
-                        Guardar
-                    </Button>
-                    <Button size="sm" color="danger" onClick={cerrarModal}>
-                        Cerrar
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                    <Modal style={style} isOpen={verModal}>
+                        <ModalHeader>Detalle Marca</ModalHeader>
+                        <ModalBody>
+                            <FormGroup>
+                                <Label>Nombre</Label>
+                                <Input bsSize="sm" name="nombreMarca" onChange={handleChange} value={Marca.nombreMarca} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Estado</Label>
+                                <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Marca.esActivo}>
+                                    <option value={true}>Activo</option>
+                                    <option value={false}>No Activo</option>
+                                </Input>
+                            </FormGroup>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button size="sm" color="primary" onClick={guardarCambios}>
+                                Guardar
+                            </Button>
+                            <Button size="sm" color="danger" onClick={cerrarModal}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            ) : (
+                <Navigate to="/noDisponible" />
+            )}
         </>
     );
 };

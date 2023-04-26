@@ -12,6 +12,7 @@ const modeloCategoria = {
 
 const Categoria = () => {
     let token = sessionStorage.getItem('token');
+    let acceso = sessionStorage.getItem('UsuarioLogin');
     const [categoria, setCategoria] = useState(modeloCategoria);
     const [pendiente, setPendiente] = useState(true);
     const [categorias, setCategorias] = useState([]);
@@ -199,48 +200,54 @@ const Categoria = () => {
     return (
         <>
             {!token && <Navigate to="/login" />}
-            <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Categorias</CardHeader>
-                <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nueva Categoria
-                    </Button>
-                    <hr></hr>
-                    <DataTable
-                        columns={columns}
-                        data={categorias}
-                        progressPending={pendiente}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        customStyles={customStyles}
-                    />
-                </CardBody>
-            </Card>
+            {acceso == 1 ? (
+                <div>
+                    <Card>
+                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Categorias</CardHeader>
+                        <CardBody>
+                            <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                                Nueva Categoria
+                            </Button>
+                            <hr></hr>
+                            <DataTable
+                                columns={columns}
+                                data={categorias}
+                                progressPending={pendiente}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                customStyles={customStyles}
+                            />
+                        </CardBody>
+                    </Card>
 
-            <Modal style={style} isOpen={verModal}>
-                <ModalHeader>Detalle Categoria</ModalHeader>
-                <ModalBody>
-                    <FormGroup>
-                        <Label>Descripción</Label>
-                        <Input bsSize="sm" name="descripcion" onChange={handleChange} value={categoria.descripcion} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Estado</Label>
-                        <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={categoria.esActivo}>
-                            <option value={true}>Activo</option>
-                            <option value={false}>No Activo</option>
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button size="sm" color="primary" onClick={guardarCambios}>
-                        Guardar
-                    </Button>
-                    <Button size="sm" color="danger" onClick={cerrarModal}>
-                        Cerrar
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                    <Modal style={style} isOpen={verModal}>
+                        <ModalHeader>Detalle Categoria</ModalHeader>
+                        <ModalBody>
+                            <FormGroup>
+                                <Label>Descripción</Label>
+                                <Input bsSize="sm" name="descripcion" onChange={handleChange} value={categoria.descripcion} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Estado</Label>
+                                <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={categoria.esActivo}>
+                                    <option value={true}>Activo</option>
+                                    <option value={false}>No Activo</option>
+                                </Input>
+                            </FormGroup>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button size="sm" color="primary" onClick={guardarCambios}>
+                                Guardar
+                            </Button>
+                            <Button size="sm" color="danger" onClick={cerrarModal}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            ) : (
+                <Navigate to="/noDisponible" />
+            )}
         </>
     );
 };

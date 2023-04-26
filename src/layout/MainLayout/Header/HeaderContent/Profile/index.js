@@ -62,8 +62,8 @@ const Profile = () => {
     const handleLogout = async () => {
         // logout
         sessionStorage.clear();
-        window.location.reload();
         history('/');
+        window.location.reload();
     };
 
     const anchorRef = useRef(null);

@@ -18,11 +18,14 @@ import DatePicker from 'react-datepicker';
 import Swal from 'sweetalert2';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
+import ReactToPrint from 'react-to-print';
+import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
 
 const HistorialVenta = () => {
     let token = sessionStorage.getItem('token');
+    const componentRef = useRef();
     const [fechaInicio, setFechaInicio] = useState(new Date());
     const [fechaFin, setFechaFin] = useState(new Date());
     const [nroVenta, setNumeroVenta] = useState('');
@@ -86,6 +89,10 @@ const HistorialVenta = () => {
         // ventana.close();
         // return true;
     };
+
+    const handlePrinf = useReactToPrint({
+        content: () => componentRef.current
+    });
 
     return (
         <>
@@ -202,7 +209,7 @@ const HistorialVenta = () => {
             </Row>
 
             <Modal style={{ top: '10%' }} size="lg" isOpen={verModal}>
-                <div id="imp">
+                <div id="imp" ref={componentRef}>
                     <ModalHeader>Detalle Venta</ModalHeader>
                     <ModalBody>
                         <Row>
@@ -298,9 +305,10 @@ const HistorialVenta = () => {
                     </ModalBody>
                 </div>
                 <ModalFooter>
-                    {/* <Button size="sm" color="primary" onClick={() => imprimir('imp')}>
+                    {/* <ReactToPrint trigger={() => <button>Imprimir PDF</button>} content={() => this.componentRef} /> */}
+                    <Button size="sm" color="primary" onClick={handlePrinf}>
                         Imprimir
-                    </Button> */}
+                    </Button>
                     <Button size="sm" color="danger" onClick={() => setVerModal(!verModal)}>
                         Cerrar
                     </Button>

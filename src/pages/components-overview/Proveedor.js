@@ -15,6 +15,7 @@ const modeloProveedor = {
 
 const Proveedor = () => {
     let token = sessionStorage.getItem('token');
+    let acceso = sessionStorage.getItem('UsuarioLogin');
     const [Proveedor, setProveedor] = useState(modeloProveedor);
     const [pendiente, setPendiente] = useState(true);
     const [Proveedors, setProveedors] = useState([]);
@@ -44,25 +45,6 @@ const Proveedor = () => {
         obtenerProveedors();
         console.log(Proveedors);
     }, []);
-
-    const style2 = {
-        position: 'absolute',
-        backgroundColor: 'badge badge-info p-2',
-        width: 60,
-        bgcolor: 'background.paper',
-        border: '2px solid #000000',
-        p: 4
-    };
-
-    const style3 = {
-        position: 'absolute',
-        color: 'badge badge-info p-2',
-        width: 80,
-        bgcolor: 'background.paper',
-        border: '2px solid #ff0000',
-        backgroundColor: 'red',
-        p: 4
-    };
 
     const columns = [
         {
@@ -185,74 +167,72 @@ const Proveedor = () => {
     };
 
     const style = {
-        // position: 'absolute',
         top: '10%'
-        // left: '10%'
-        // transform: 'translate(-50%, -50%)',
-        // width: 10,
-        // bgcolor: 'background.paper',
-        // border: '2px solid #000',
-        // boxShadow: 24,
-        // p: 4
     };
 
     return (
         <>
             {!token && <Navigate to="/login" />}
-            <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Proveedors</CardHeader>
-                <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nueva Proveedor
-                    </Button>
-                    <hr></hr>
-                    <DataTable
-                        columns={columns}
-                        data={Proveedors}
-                        progressPending={pendiente}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        customStyles={customStyles}
-                    />
-                </CardBody>
-            </Card>
+            {acceso == 1 ? (
+                <div>
+                    <Card>
+                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Proveedors</CardHeader>
+                        <CardBody>
+                            <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                                Nueva Proveedor
+                            </Button>
+                            <hr></hr>
+                            <DataTable
+                                columns={columns}
+                                data={Proveedors}
+                                progressPending={pendiente}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                customStyles={customStyles}
+                            />
+                        </CardBody>
+                    </Card>
 
-            <Modal style={style} isOpen={verModal}>
-                <ModalHeader>Detalle Proveedor</ModalHeader>
-                <ModalBody>
-                    <FormGroup>
-                        <Label>Nombre</Label>
-                        <Input bsSize="sm" name="nombreProveedor" onChange={handleChange} value={Proveedor.nombreProveedor} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Número Documento</Label>
-                        <Input bsSize="sm" name="ruc_Cedula" onChange={handleChange} value={Proveedor.ruc_Cedula} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Dirección</Label>
-                        <Input bsSize="sm" name="direccion" onChange={handleChange} value={Proveedor.direccion} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Teléfono</Label>
-                        <Input bsSize="sm" name="telefono" onChange={handleChange} value={Proveedor.telefono} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Estado</Label>
-                        <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Proveedor.esActivo}>
-                            <option value={true}>Activo</option>
-                            <option value={false}>No Activo</option>
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button size="sm" color="primary" onClick={guardarCambios}>
-                        Guardar
-                    </Button>
-                    <Button size="sm" color="danger" onClick={cerrarModal}>
-                        Cerrar
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                    <Modal style={style} isOpen={verModal}>
+                        <ModalHeader>Detalle Proveedor</ModalHeader>
+                        <ModalBody>
+                            <FormGroup>
+                                <Label>Nombre</Label>
+                                <Input bsSize="sm" name="nombreProveedor" onChange={handleChange} value={Proveedor.nombreProveedor} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Número Documento</Label>
+                                <Input bsSize="sm" name="ruc_Cedula" onChange={handleChange} value={Proveedor.ruc_Cedula} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Dirección</Label>
+                                <Input bsSize="sm" name="direccion" onChange={handleChange} value={Proveedor.direccion} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Teléfono</Label>
+                                <Input bsSize="sm" name="telefono" onChange={handleChange} value={Proveedor.telefono} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Estado</Label>
+                                <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Proveedor.esActivo}>
+                                    <option value={true}>Activo</option>
+                                    <option value={false}>No Activo</option>
+                                </Input>
+                            </FormGroup>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button size="sm" color="primary" onClick={guardarCambios}>
+                                Guardar
+                            </Button>
+                            <Button size="sm" color="danger" onClick={cerrarModal}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            ) : (
+                <Navigate to="/noDisponible" />
+            )}
         </>
     );
 };

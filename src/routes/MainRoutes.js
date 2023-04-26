@@ -113,16 +113,10 @@ const MainRoutes = {
             path: 'producto',
             element: <Producto />
         },
-        sessionStorage.getItem('UsuarioLogin') == 1
-            ? {
-                  path: 'inventario',
-                  element: <Inventario />
-              }
-            : {
-                  path: 'inventario',
-                  element: <NoDisponible />,
-                  authorized: false
-              },
+        {
+            path: 'inventario',
+            element: <Inventario />
+        },
         {
             path: 'noDisponible',
             element: <NoDisponible />,
