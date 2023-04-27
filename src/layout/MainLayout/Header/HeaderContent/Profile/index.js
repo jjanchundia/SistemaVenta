@@ -58,6 +58,7 @@ function a11yProps(index) {
 const Profile = () => {
     const history = useNavigate();
     const theme = useTheme();
+    let nombreUsuario = sessionStorage.getItem('NombreUsuario');
 
     const handleLogout = async () => {
         // logout
@@ -103,8 +104,8 @@ const Profile = () => {
                 onClick={handleToggle}
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-                    <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-                    <Typography variant="subtitle1">John Doe</Typography>
+                    {/* <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} /> */}
+                    <Typography variant="subtitle1">Bienvenido {nombreUsuario}</Typography>
                 </Stack>
             </ButtonBase>
             <Popper
@@ -147,9 +148,10 @@ const Profile = () => {
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
                                                         <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                                                         <Stack>
-                                                            <Typography variant="h6">John Doe</Typography>
+                                                            <Typography variant="h6"> {nombreUsuario}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
-                                                                UI/UX Designer
+                                                                {/* UI/UX Designer */}
+                                                                Bienvenido al Sistema
                                                             </Typography>
                                                         </Stack>
                                                     </Stack>

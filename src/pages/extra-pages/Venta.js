@@ -37,6 +37,7 @@ const Venta = () => {
     const reestablecer = () => {
         setTipoDocumento('Nota de Ventas');
         setProductos([]);
+        setClienteC([]);
         setTotal(0);
         setSubTotal(0);
         setIgv(0);
@@ -161,8 +162,9 @@ const Venta = () => {
     const getSuggestionValueCliente = (sugerencia) => {
         setClienteC(sugerencia.cedula + ' - ' + sugerencia.nombres + ' - ' + sugerencia.apellidos);
         setIdCliente(sugerencia.idCliente);
-        // setA_Clientes([]);
-        // setA_BusquedaCliente('');
+        setA_Clientes([]);
+        setA_BusquedaCliente('');
+        document.getElementById('idautosuggest2').value = '';
         return sugerencia.cedula + ' - ' + sugerencia.nombres + ' - ' + sugerencia.apellidos;
     };
 
@@ -262,26 +264,6 @@ const Venta = () => {
                                 <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Cliente</CardHeader>
                                 <CardBody>
                                     <Row>
-                                        {/* <Col sm={6}>
-                                            <FormGroup>
-                                                <Label>Nro Documento</Label>
-                                                <Input
-                                                    bsSize="sm"
-                                                    value={documentoCliente}
-                                                    onChange={(e) => setDocumentoCliente(e.target.value)}
-                                                />
-                                            </FormGroup>
-                                        </Col>
-                                        <Col sm={6}>
-                                            <FormGroup>
-                                                <Label>Nombre</Label>
-                                                <Input
-                                                    bsSize="sm"
-                                                    value={nombreCliente}
-                                                    onChange={(e) => setNombreCliente(e.target.value)}
-                                                />
-                                            </FormGroup>
-                                        </Col> */}
                                         <Col sm={12}>
                                             {/* <FormGroup> */}
                                             <Autosuggest

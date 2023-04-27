@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
-import ReactToPrint from 'react-to-print';
+import { EyeOutlined, PrinterOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
 
 const HistorialVenta = () => {
@@ -64,30 +64,6 @@ const HistorialVenta = () => {
     const mostrarModal = (data) => {
         setDetalleVenta(data);
         setVerModal(!verModal);
-    };
-
-    const imprimir = (nombreDiv) => {
-        var contenido = document.getElementById(nombreDiv).innerHTML;
-        var contenidoOriginal = document.body.innerHTML;
-        document.body.innerHTML = contenido;
-        window.print();
-        document.body.innerHTML = contenidoOriginal;
-        // var ficha = document.getElementById(nombreDiv);
-        // var ventimp = window.open(' ', 'popimpr');
-        // ventimp.document.write(ficha.innerHTML);
-        // ventimp.document.close();
-        // ventimp.print();
-        // ventimp.close();
-        // var ventana = window.open('', 'PRINT', 'height=400,width=600');
-        // ventana.document.write('<html><head><title>' + 'document.title' + '</title>');
-        // ventana.document.write('</head><body >');
-        // ventana.document.write(contenido);
-        // ventana.document.write('</body></html>');
-        // ventana.document.close();
-        // ventana.focus();
-        // ventana.print();
-        // ventana.close();
-        // return true;
     };
 
     const handlePrinf = useReactToPrint({
@@ -193,7 +169,8 @@ const HistorialVenta = () => {
                                                         <td>{item.total}</td>
                                                         <td>
                                                             <Button size="sm" color="info" outline onClick={() => mostrarModal(item)}>
-                                                                <i className="fa fa-eye" aria-hidden="true"></i> Ver detalle
+                                                                <EyeOutlined style={{ fontSize: '18px', color: '#08c' }} />
+                                                                Ver detalle
                                                             </Button>
                                                         </td>
                                                     </tr>
@@ -306,11 +283,11 @@ const HistorialVenta = () => {
                 </div>
                 <ModalFooter>
                     {/* <ReactToPrint trigger={() => <button>Imprimir PDF</button>} content={() => this.componentRef} /> */}
-                    <Button size="sm" color="primary" onClick={handlePrinf}>
-                        Imprimir
+                    <Button size="md" title="Imprimir" color="primary" onClick={handlePrinf}>
+                        <PrinterOutlined />
                     </Button>
-                    <Button size="sm" color="danger" onClick={() => setVerModal(!verModal)}>
-                        Cerrar
+                    <Button size="md" title="Cerrar" color="danger" onClick={() => setVerModal(!verModal)}>
+                        <CloseCircleOutlined />
                     </Button>
                 </ModalFooter>
             </Modal>

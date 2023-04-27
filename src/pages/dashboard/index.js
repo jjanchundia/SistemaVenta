@@ -268,7 +268,6 @@ const DashboardDefault = () => {
     };
 
     const cantidadGanancias = async () => {
-        debugger;
         let response = await fetch('http://localhost:5158/api/dashboard/VentasPorMes');
         if (response.ok) {
             let data = await response.json();

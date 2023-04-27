@@ -19,6 +19,9 @@ import Pagos from 'pages/extra-pages/Pagos';
 import PagoConfirmar from 'pages/extra-pages/PagoConfirmar';
 import PagosDetalle from 'pages/extra-pages/PagosDetalle';
 import NoDisponible from 'pages/extra-pages/NoDisponible';
+import Empresa from 'pages/components-overview/Empresa';
+import EditarPerfil from 'pages/components-overview/EditarPerfil';
+import VerPerfil from 'pages/components-overview/VerPerfil';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -145,6 +148,18 @@ const MainRoutes = {
         {
             path: 'marca',
             element: <Marca />
+        },
+        {
+            path: 'empresa',
+            element: <Empresa />
+        },
+        {
+            path: 'editarPerfil',
+            element: <EditarPerfil />
+        },
+        {
+            path: 'verPerfil',
+            element: <VerPerfil />
         }
     ]
 };

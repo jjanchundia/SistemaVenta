@@ -171,7 +171,6 @@ const Inventario = () => {
 
     const guardarCambios = async () => {
         delete producto.idCategoriaNavigation;
-        debugger;
         let response;
         if (producto.idProducto == 0) {
             response = await fetch('http://localhost:5158/api/producto/Guardar', {

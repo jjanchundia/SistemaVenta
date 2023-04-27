@@ -21,6 +21,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
+import { EyeOutlined } from '@ant-design/icons';
 
 const HistorialCompra = () => {
     let token = sessionStorage.getItem('token');
@@ -169,7 +170,8 @@ const HistorialCompra = () => {
                                                         <td>{item.total}</td>
                                                         <td>
                                                             <Button size="sm" color="info" outline onClick={() => mostrarModal(item)}>
-                                                                <i className="fa fa-eye" aria-hidden="true"></i> Ver detalle
+                                                                <EyeOutlined style={{ fontSize: '18px', color: '#08c' }} />
+                                                                Ver detalle
                                                             </Button>
                                                         </td>
                                                     </tr>

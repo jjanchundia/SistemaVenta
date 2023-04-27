@@ -45,6 +45,7 @@ const Login = () => {
                     // localStorage.setItem("token", tokenRecibido); se cambia
                     sessionStorage.setItem('token', tokenRecibido);
                     sessionStorage.setItem('UsuarioLogin', dataJson.idRol);
+                    sessionStorage.setItem('NombreUsuario', dataJson.nombre);
                     history('/');
                 }
             })
@@ -58,8 +59,8 @@ const Login = () => {
         <AuthWrapper>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-                        <Typography variant="h3">Login</Typography>
+                    <Stack direction="row" justifyContent="center" alignItems="baseline" color="orange" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
+                        <Typography variant="h2">Login - Store Ventas</Typography>
                         {/* <Typography component={Link} to="/register" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
                             Don&apos;t have an account?
                         </Typography> */}
@@ -86,7 +87,7 @@ const Login = () => {
                                 onChange={(e) => set_Clave(e.target.value)}
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary btn-user btn-block">
+                        <button type="submit" className="btn btn-warning active btn-user btn-block">
                             {' '}
                             Ingresar{' '}
                         </button>

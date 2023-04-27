@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const modeloMarca = {
     idMarca: 0,
@@ -49,35 +50,35 @@ const Marca = () => {
             selector: (row) => row.nombreMarca,
             sortable: true
         },
-        {
-            name: 'Estado',
-            selector: (row) => row.esActivo, // == true ? 'Activo' : 'No Activo',
-            sortable: true,
-            cell: (row) => {
-                let clase;
-                clase = row.esActivo ? 'badge badge-info p-2' : 'badge badge-danger p-2';
-                // return <span className="badge badge-info p-2">{row.esActivo ? 'Activo' : 'No Activo'}</span>;
-                return row.esActivo ? (
-                    <Alert style={{ top: '10%' }} size="md" color="primary">
-                        Activo
-                    </Alert>
-                ) : (
-                    <Alert style={{ top: '10%' }} color="danger">
-                        No Activo
-                    </Alert>
-                );
-            }
-        },
+        // {
+        //     name: 'Estado',
+        //     selector: (row) => row.esActivo, // == true ? 'Activo' : 'No Activo',
+        //     sortable: true,
+        //     cell: (row) => {
+        //         let clase;
+        //         clase = row.esActivo ? 'badge badge-info p-2' : 'badge badge-danger p-2';
+        //         // return <span className="badge badge-info p-2">{row.esActivo ? 'Activo' : 'No Activo'}</span>;
+        //         return row.esActivo ? (
+        //             <Alert style={{ top: '10%' }} size="md" color="primary">
+        //                 Activo
+        //             </Alert>
+        //         ) : (
+        //             <Alert style={{ top: '10%' }} color="danger">
+        //                 No Activo
+        //             </Alert>
+        //         );
+        //     }
+        // },
         {
             name: '',
             cell: (row) => (
                 <>
-                    <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="bi bi-calculator"></i>Editar
+                    <Button color="primary" title="Editar Marca" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
+                        <EditOutlined />
                     </Button>
 
-                    <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarMarca(row.idMarca)}>
-                        <i className="fas fa-trash-alt"></i>Eliminar
+                    <Button color="danger" title="Eliminar Marca" size="sm" className="mr-2" onClick={() => eliminarMarca(row.idMarca)}>
+                        <DeleteOutlined />
                     </Button>
                 </>
             )
@@ -179,7 +180,7 @@ const Marca = () => {
                         <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Marcas</CardHeader>
                         <CardBody>
                             <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                                Nueva Marca
+                                <PlusCircleOutlined /> Nueva Marca
                             </Button>
                             <hr></hr>
                             <DataTable
@@ -200,13 +201,13 @@ const Marca = () => {
                                 <Label>Nombre</Label>
                                 <Input bsSize="sm" name="nombreMarca" onChange={handleChange} value={Marca.nombreMarca} />
                             </FormGroup>
-                            <FormGroup>
+                            {/* <FormGroup>
                                 <Label>Estado</Label>
                                 <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Marca.esActivo}>
                                     <option value={true}>Activo</option>
                                     <option value={false}>No Activo</option>
                                 </Input>
-                            </FormGroup>
+                            </FormGroup> */}
                         </ModalBody>
                         <ModalFooter>
                             <Button size="sm" color="primary" onClick={guardarCambios}>

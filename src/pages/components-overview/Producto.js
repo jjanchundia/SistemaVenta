@@ -17,6 +17,7 @@ import {
 } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const modeloProducto = {
     idProducto: 0,
@@ -131,12 +132,12 @@ const Producto = () => {
             name: '',
             cell: (row) => (
                 <>
-                    <Button color="primary" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="fas fa-pen-alt"></i>Editar
+                    <Button color="primary" title="Editar Producto" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
+                        <EditOutlined />
                     </Button>
 
-                    <Button color="danger" size="sm" onClick={() => eliminarProducto(row.idProducto)}>
-                        <i className="fas fa-trash-alt"></i>Eliminar
+                    <Button color="danger" title="Eliminar Producto" size="sm" onClick={() => eliminarProducto(row.idProducto)}>
+                        <DeleteOutlined />
                     </Button>
                 </>
             )
@@ -176,7 +177,6 @@ const Producto = () => {
 
     const guardarCambios = async () => {
         delete producto.idCategoriaNavigation;
-        debugger;
         let response;
         if (producto.idProducto == 0) {
             response = await fetch('http://localhost:5158/api/producto/Guardar', {
@@ -237,7 +237,7 @@ const Producto = () => {
                         <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Productos</CardHeader>
                         <CardBody>
                             <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                                Nuevo Producto
+                                <PlusCircleOutlined /> Nuevo Producto
                             </Button>
                             <hr></hr>
                             <DataTable
@@ -264,7 +264,14 @@ const Producto = () => {
                                 <Col sm={6}>
                                     <FormGroup>
                                         <Label>Marca</Label>
-                                        <Input bsSize="sm" type={'select'} name="idmarca" onChange={handleChange} value={producto.idmarca}>
+                                        <Input
+                                            bsSize="sm"
+                                            className="form-control form-control-sm"
+                                            type={'select'}
+                                            name="idmarca"
+                                            onChange={handleChange}
+                                            value={producto.idmarca}
+                                        >
                                             <option value={0}>Seleccionar</option>
                                             {Marcas.map((item) => {
                                                 return (
@@ -291,6 +298,7 @@ const Producto = () => {
                                             bsSize="sm"
                                             type={'select'}
                                             name="idCategoria"
+                                            className="form-control form-control-sm"
                                             onChange={handleChange}
                                             value={producto.idCategoria}
                                         >
@@ -333,6 +341,7 @@ const Producto = () => {
                                     <FormGroup>
                                         <Label>Estado</Label>
                                         <Input
+                                            className="form-control form-control-sm"
                                             bsSize="sm"
                                             type={'select'}
                                             name="esActivo"

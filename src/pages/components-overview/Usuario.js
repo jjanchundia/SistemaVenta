@@ -17,6 +17,7 @@ import {
 } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const modeloUsuario = {
     idUsuario: 0,
@@ -116,11 +117,11 @@ const Usuario = () => {
             cell: (row) => (
                 <>
                     <Button color="primary" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="fas fa-pen-alt"></i>Editar
+                        <EditOutlined />
                     </Button>
 
                     <Button color="danger" size="sm" onClick={() => eliminarUsuario(row.idUsuario)}>
-                        <i className="fas fa-trash-alt"></i> Eliminar
+                        <DeleteOutlined />
                     </Button>
                 </>
             )
@@ -216,6 +217,19 @@ const Usuario = () => {
         top: '10%'
     };
 
+    const [searchText, setSearchText] = useState('');
+
+    const handleSearch = (event) => {
+        setSearchText(event.target.value);
+    };
+
+    const filteredData = usuarios.filter(
+        (item) =>
+            item.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.correo.toLowerCase().includes(searchText.toLowerCase() || item.telefono.includes(searchText.toLowerCase()))
+    );
+    // const filteredData2 = usuarios.filter((item) => item.correo.toLowerCase().includes(searchText.toLowerCase()));
+
     return (
         <>
             {!token && <Navigate to="/login" />}
@@ -225,12 +239,45 @@ const Usuario = () => {
                         <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Usuarios</CardHeader>
                         <CardBody>
                             <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                                Nuevo Usuario
+                                <PlusCircleOutlined /> Nuevo Usuario
                             </Button>
                             <hr></hr>
+
+                            {/* <Row>
+                                <FormGroup>
+                                    <Label for="exampleEmail">Búsqueda: </Label>
+                                    <Col sm={10}></Col>
+                                    <Input
+                                        name="email"
+                                        value={searchText}
+                                        onChange={handleSearch}
+                                        placeholder="Ingrese su búsqueda"
+                                        type="email"
+                                    />
+                                </FormGroup>
+                            </Row> */}
+
+                            <FormGroup row>
+                                <Label for="exampleEmail" md={2}>
+                                    Búsqueda:
+                                </Label>
+                                <Col sm={4} style={{ align: 'left' }}>
+                                    <Input
+                                        name="email"
+                                        value={searchText}
+                                        onChange={handleSearch}
+                                        placeholder="Ingrese su búsqueda"
+                                        type="email"
+                                    />
+                                </Col>
+                            </FormGroup>
+
+                            {/* <Col sm={9}>
+                                <input type="text" value={searchText} onChange={handleSearch} />
+                            </Col> */}
                             <DataTable
                                 columns={columns}
-                                data={usuarios}
+                                data={filteredData}
                                 progressPending={pendiente}
                                 pagination
                                 paginationComponentOptions={paginationComponentOptions}

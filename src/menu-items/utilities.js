@@ -5,7 +5,14 @@ import {
     BarcodeOutlined,
     BgColorsOutlined,
     FontSizeOutlined,
-    LoadingOutlined
+    LoadingOutlined,
+    UserOutlined,
+    UpOutlined,
+    TeamOutlined,
+    OrderedListOutlined,
+    UsergroupDeleteOutlined,
+    VerifiedOutlined,
+    HomeOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -15,7 +22,14 @@ const icons = {
     BarcodeOutlined,
     AntDesignOutlined,
     LoadingOutlined,
-    AppstoreAddOutlined
+    AppstoreAddOutlined,
+    UserOutlined,
+    UpOutlined,
+    TeamOutlined,
+    OrderedListOutlined,
+    UsergroupDeleteOutlined,
+    VerifiedOutlined,
+    HomeOutlined
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -30,7 +44,7 @@ const utilities = {
             title: 'Usuarios',
             type: 'item',
             url: '/Usuario',
-            icon: icons.FontSizeOutlined,
+            icon: icons.UserOutlined,
             breadcrumbs: false
         },
         {
@@ -46,7 +60,7 @@ const utilities = {
             title: 'Marca',
             type: 'item',
             url: '/Marca',
-            icon: icons.AntDesignOutlined,
+            icon: icons.VerifiedOutlined,
             breadcrumbs: false
         },
         {
@@ -70,7 +84,7 @@ const utilities = {
             title: 'Clientes',
             type: 'item',
             url: '/Cliente',
-            icon: icons.AntDesignOutlined,
+            icon: icons.UsergroupDeleteOutlined,
             breadcrumbs: false
         },
         {
@@ -78,7 +92,7 @@ const utilities = {
             title: 'Proveedores',
             type: 'item',
             url: '/Proveedor',
-            icon: icons.AntDesignOutlined,
+            icon: icons.TeamOutlined,
             breadcrumbs: false
         },
         {
@@ -86,7 +100,15 @@ const utilities = {
             title: 'Inventario',
             type: 'item',
             url: '/Inventario',
-            icon: icons.AntDesignOutlined,
+            icon: icons.OrderedListOutlined,
+            breadcrumbs: false
+        },
+        {
+            id: 'ant-icons56',
+            title: 'Empresa',
+            type: 'item',
+            url: '/Empresa',
+            icon: icons.HomeOutlined,
             breadcrumbs: false
         }
     ]

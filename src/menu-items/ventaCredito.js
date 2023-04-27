@@ -10,36 +10,28 @@ const icons = {
 
 // ==============================|| MENU ITEMS - SAMPLE PAGE & DOCUMENTATION ||============================== //
 
-const support = {
-    id: 'support',
-    title: 'Ventas',
+const ventaCredito = {
+    id: 'ventaCredito',
+    title: 'Ventas a Crédito',
     type: 'group',
     children: [
         {
-            id: 'Nueva_Venta',
-            title: 'Venta Contado',
+            id: 'ventaCredito',
+            title: 'Ventas a Crédito',
             type: 'item',
-            url: '/venta',
+            url: '/ventaCredito',
             icon: icons.ShoppingCartOutlined,
             breadcrumbs: false
         },
         {
-            id: 'historialVenta',
-            title: 'Historial Venta',
+            id: 'pagos',
+            title: 'Pagos',
             type: 'item',
-            url: '/historialVenta',
-            icon: icons.ShoppingCartOutlined,
-            breadcrumbs: false
-        },
-        {
-            id: 'reporteVentas',
-            title: 'Reporte Venta',
-            type: 'item',
-            url: '/ReporteVenta',
+            url: '/pagos',
             icon: icons.ShoppingCartOutlined,
             breadcrumbs: false
         }
     ]
 };
 
-export default support;
+export default ventaCredito;

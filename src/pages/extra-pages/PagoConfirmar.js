@@ -16,14 +16,12 @@ const PagoConfirmar = () => {
     const [TotalPagarM, setTotalPagarM] = useState(0);
 
     const guardarCambios = async () => {
-        debugger;
         if (CantidadMeses <= 0) {
             Swal.fire('error', 'Ingrese las cuotas a pagar', 'error');
             return;
         }
 
         let response;
-        debugger;
         let pago = {
             IdVentaCredito: state.data.idVentaCredito,
             CuotaPagar: CantidadMeses,

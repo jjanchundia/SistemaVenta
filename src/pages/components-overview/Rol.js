@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import { EditOutlined } from '@ant-design/icons';
 
 const modeloRol = {
     idRol: 0,
@@ -12,6 +13,7 @@ const modeloRol = {
 
 const Rol = () => {
     let token = sessionStorage.getItem('token');
+    let acceso = sessionStorage.getItem('UsuarioLogin');
     const [Rol, setRol] = useState(modeloRol);
     const [pendiente, setPendiente] = useState(true);
     const [Rols, setRols] = useState([]);
@@ -90,13 +92,13 @@ const Rol = () => {
             name: '',
             cell: (row) => (
                 <>
-                    <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="bi bi-calculator"></i>Editar
+                    <Button color="primary" title="Editar Rol" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
+                        <EditOutlined />
                     </Button>
-
+                    {/* 
                     <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarRol(row.idRol)}>
                         <i className="fas fa-trash-alt"></i>Eliminar
-                    </Button>
+                    </Button> */}
                 </>
             )
         }
@@ -185,62 +187,61 @@ const Rol = () => {
     };
 
     const style = {
-        // position: 'absolute',
         top: '10%'
-        // left: '10%'
-        // transform: 'translate(-50%, -50%)',
-        // width: 10,
-        // bgcolor: 'background.paper',
-        // border: '2px solid #000',
-        // boxShadow: 24,
-        // p: 4
     };
 
     return (
         <>
             {!token && <Navigate to="/login" />}
-            <Card>
-                <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Roles</CardHeader>
-                <CardBody>
-                    <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                        Nueva Rol
-                    </Button>
-                    <hr></hr>
-                    <DataTable
-                        columns={columns}
-                        data={Rols}
-                        progressPending={pendiente}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        customStyles={customStyles}
-                    />
-                </CardBody>
-            </Card>
 
-            <Modal style={style} isOpen={verModal}>
-                <ModalHeader>Detalle Rol</ModalHeader>
-                <ModalBody>
-                    <FormGroup>
-                        <Label>Descripción</Label>
-                        <Input bsSize="sm" name="descripcion" onChange={handleChange} value={Rol.descripcion} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Estado</Label>
-                        <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Rol.esActivo}>
-                            <option value={true}>Activo</option>
-                            <option value={false}>No Activo</option>
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button size="sm" color="primary" onClick={guardarCambios}>
-                        Guardar
-                    </Button>
-                    <Button size="sm" color="danger" onClick={cerrarModal}>
-                        Cerrar
-                    </Button>
-                </ModalFooter>
-            </Modal>
+            {acceso == 1 ? (
+                <div>
+                    <Card>
+                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Roles</CardHeader>
+                        <CardBody>
+                            {/* <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
+                        Nueva Rol
+                    </Button> */}
+                            <hr></hr>
+                            <DataTable
+                                columns={columns}
+                                data={Rols}
+                                progressPending={pendiente}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                customStyles={customStyles}
+                            />
+                        </CardBody>
+                    </Card>
+
+                    <Modal style={style} isOpen={verModal}>
+                        <ModalHeader>Detalle Rol</ModalHeader>
+                        <ModalBody>
+                            <FormGroup>
+                                <Label>Descripción</Label>
+                                <Input bsSize="sm" name="descripcion" onChange={handleChange} value={Rol.descripcion} />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Estado</Label>
+                                <Input bsSize="sm" type={'select'} name="esActivo" onChange={handleChange} value={Rol.esActivo}>
+                                    <option value={true}>Activo</option>
+                                    <option value={false}>No Activo</option>
+                                </Input>
+                            </FormGroup>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button size="sm" color="primary" onClick={guardarCambios}>
+                                Guardar
+                            </Button>
+                            <Button size="sm" color="danger" onClick={cerrarModal}>
+                                Cerrar
+                            </Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            ) : (
+                <Navigate to="/noDisponible" />
+            )}
         </>
     );
 };

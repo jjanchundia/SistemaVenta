@@ -1,14 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import DataTable from 'react-data-table-component';
-import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Button,
+    Alert,
+    Modal,
+    ModalHeader,
+    Row,
+    Col,
+    ModalBody,
+    Label,
+    Input,
+    FormGroup,
+    ModalFooter,
+    Table
+} from 'reactstrap';
 import Swal from 'sweetalert2';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
+import ReactToPrint from '../../../node_modules/react-to-print/lib/index';
+import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
 
 const PagosDetalle = () => {
     let token = sessionStorage.getItem('token');
+    const ref = useRef();
+    const componentRef = useRef();
     const { state } = useLocation();
     const history = useNavigate();
-    console.log(state);
 
     const [pendiente, setPendiente] = useState(true);
     const [Pagos, setPagos] = useState([]);
@@ -26,7 +45,6 @@ const PagosDetalle = () => {
 
     useEffect(() => {
         obtenerPagos();
-        console.log(Pagos);
     }, []);
 
     const columns = [
@@ -65,7 +83,7 @@ const PagosDetalle = () => {
             cell: (row) => (
                 <>
                     <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="bi bi-calculator"></i>Imp
+                        <i className="bi bi-calculator"></i>Detalle
                     </Button>
                 </>
             )
@@ -93,10 +111,19 @@ const PagosDetalle = () => {
         selectAllRowsItemText: 'Todos'
     };
 
+    const [verModal, setVerModal] = useState(false);
+
+    const [detalleVenta, setDetalleVenta] = useState({});
     const abrirEditarModal = (data) => {
         console.log(data);
-        history('/pagoConfirmar', { state: { data: data } });
+        // history('/pagoConfirmar', { state: { data: data } });
+        setDetalleVenta(data);
+        setVerModal(!verModal);
     };
+
+    const handlePrinf = useReactToPrint({
+        content: () => componentRef.current
+    });
 
     return (
         <>
@@ -114,6 +141,121 @@ const PagosDetalle = () => {
                     />
                 </CardBody>
             </Card>
+            {/* <div className="print">
+                <div style={{ display: 'none' }} className="sss">
+                    <div ref={ref}>
+                        <p>f5s01f5d61fd6s5f01d6s5f01f516sd</p>
+                    </div>
+                </div>
+                <ReactToPrint trigger={() => <button>Print</button>} content={() => ref.current} />
+            </div> */}
+            <Modal style={{ top: '10%' }} size="lg" isOpen={verModal}>
+                <div id="imp" ref={componentRef}>
+                    <ModalHeader>Detalle de Pago</ModalHeader>
+                    <ModalBody>
+                        <Row>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Fecha Registro:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.fechaRegistro} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Cliente:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.nombreCliente} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Valor Entrada:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.valorInicial} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Cuotas Pagadas:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.cuotaPagar} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Valor a Pagar:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.cuotaMensual} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Valor Pagado:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.cuotaPagar * detalleVenta.cuotaMensual} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <h3>Valor Total de la Venta</h3>
+                        <Row>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Sub Total:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.subTotalVenta} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>IVA (12%):</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.impuestoTotalVenta} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Total:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.totalVenta} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={12}>
+                                <Table size="sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {detalleVenta.detalle == undefined ? (
+                                            <tr>
+                                                <td colSpan={4}>Sin productos</td>
+                                            </tr>
+                                        ) : (
+                                            detalleVenta.detalle.map((item) => (
+                                                <tr key={item.producto}>
+                                                    <td>{item.producto}</td>
+                                                    <td>{item.cantidad}</td>
+                                                    <td>{item.precio}</td>
+                                                    <td>{item.total}</td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </Table>
+                            </Col>
+                        </Row>
+                    </ModalBody>
+                </div>
+                <ModalFooter>
+                    {/* <ReactToPrint trigger={() => <button>Imprimir PDF</button>} content={() => this.componentRef} /> */}
+                    <Button size="sm" color="primary" onClick={handlePrinf}>
+                        Imprimir
+                    </Button>
+                    <Button size="sm" color="danger" onClick={() => setVerModal(!verModal)}>
+                        Cerrar
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </>
     );
 };

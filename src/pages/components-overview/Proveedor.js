@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const modeloProveedor = {
     IdProveedor: 0,
@@ -71,12 +72,18 @@ const Proveedor = () => {
             name: '',
             cell: (row) => (
                 <>
-                    <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => abrirEditarModal(row)}>
-                        <i className="bi bi-calculator"></i>Editar
+                    <Button color="primary" title="Editar Proveedor" size="sm" className="mr-2" onClick={() => abrirEditarModal(row)}>
+                        <EditOutlined />
                     </Button>
 
-                    <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => eliminarProveedor(row.idProveedor)}>
-                        <i className="fas fa-trash-alt"></i>Eliminar
+                    <Button
+                        color="danger"
+                        title="Eliminar Proveedor"
+                        size="sm"
+                        className="mr-2"
+                        onClick={() => eliminarProveedor(row.idProveedor)}
+                    >
+                        <DeleteOutlined />
                     </Button>
                 </>
             )
@@ -179,7 +186,7 @@ const Proveedor = () => {
                         <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Lista de Proveedors</CardHeader>
                         <CardBody>
                             <Button color="success" size="sm" onClick={() => setVerModal(!verModal)}>
-                                Nueva Proveedor
+                                <PlusCircleOutlined /> Nuevo Proveedor
                             </Button>
                             <hr></hr>
                             <DataTable
