@@ -1,27 +1,12 @@
-import {
-    Card,
-    CardBody,
-    CardHeader,
-    Col,
-    FormGroup,
-    Input,
-    Label,
-    Row,
-    Table,
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter
-} from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, FormGroup, Input, Label, Row, Table, Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import Swal from 'sweetalert2';
-
+import logo from './../../assets/images/storeVentas.png';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, PrinterOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const HistorialCompra = () => {
     let token = sessionStorage.getItem('token');
@@ -32,7 +17,16 @@ const HistorialCompra = () => {
     const [buscarPor, setBuscarPor] = useState('fecha');
 
     const [verModal, setVerModal] = useState(false);
-    const [detalleCompra, setDetalleCompra] = useState({});
+    const [detalleCompra, setDetalleCompra] = useState({
+        empresa: {
+            direccion: '',
+            email: '',
+            idEmpresa: 0,
+            nombre: '',
+            rucDocumento: '',
+            telefono: ''
+        }
+    });
 
     const [Compras, setCompras] = useState([]);
 
@@ -70,7 +64,8 @@ const HistorialCompra = () => {
     const handlePrinf = useReactToPrint({
         content: () => componentRef.current
     });
-
+    console.log(detalleCompra.subTotal);
+    console.log('detalleCompra');
     return (
         <>
             {!token && <Navigate to="/login" />}
@@ -188,8 +183,53 @@ const HistorialCompra = () => {
 
             <Modal style={{ top: '10%' }} size="lg" isOpen={verModal}>
                 <div id="imp" ref={componentRef}>
-                    <ModalHeader>Detalle Compra</ModalHeader>
                     <ModalBody>
+                        <Row>
+                            <Col sm={9}>
+                                <h5>Datos de la Empresa</h5>
+                            </Col>
+                            <Col sm={3}>
+                                <img src={logo} alt="storeVentas" width="120" style={{ alignItems: 'right' }} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Empresa:</Label>
+                                    <Input bsSize="sm" disabled value={detalleCompra.empresa.nombre} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Ruc:</Label>
+                                    <Input bsSize="sm" disabled value={detalleCompra.empresa.rucDocumento} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Teléfono:</Label>
+                                    <Input bsSize="sm" disabled value={detalleCompra.empresa.telefono} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <FormGroup>
+                                    <Label>Dirección:</Label>
+                                    <Input bsSize="sm" disabled value={detalleCompra.empresa.direccion} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={6}>
+                                <FormGroup>
+                                    <Label>Correo:</Label>
+                                    <Input bsSize="sm" disabled value={detalleCompra.empresa.email} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <hr></hr>
+                        <div>
+                            <h5>Detalle de la Compra</h5>
+                        </div>
                         <Row>
                             <Col sm={4}>
                                 <FormGroup>
@@ -284,10 +324,10 @@ const HistorialCompra = () => {
                 </div>
                 <ModalFooter>
                     <Button size="sm" color="primary" onClick={handlePrinf}>
-                        Imprimir
+                        <PrinterOutlined />
                     </Button>
                     <Button size="sm" color="danger" onClick={() => setVerModal(!verModal)}>
-                        Cerrar
+                        <CloseCircleOutlined />
                     </Button>
                 </ModalFooter>
             </Modal>

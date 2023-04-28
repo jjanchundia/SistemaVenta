@@ -228,6 +228,18 @@ const Producto = () => {
         });
     };
 
+    const [searchText, setSearchText] = useState('');
+
+    const handleSearch = (event) => {
+        setSearchText(event.target.value);
+    };
+
+    const filteredData = productos.filter(
+        (item) =>
+            item.descripcion.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.codigo.toLowerCase().includes(searchText.toLowerCase())
+    );
+
     return (
         <>
             {!token && <Navigate to="/login" />}
@@ -240,9 +252,23 @@ const Producto = () => {
                                 <PlusCircleOutlined /> Nuevo Producto
                             </Button>
                             <hr></hr>
+                            <FormGroup row>
+                                <Label for="exampleEmail" md={2}>
+                                    Búsqueda:
+                                </Label>
+                                <Col sm={4} style={{ align: 'left' }}>
+                                    <Input
+                                        name="email"
+                                        value={searchText}
+                                        onChange={handleSearch}
+                                        placeholder="Ingrese su búsqueda"
+                                        type="email"
+                                    />
+                                </Col>
+                            </FormGroup>
                             <DataTable
                                 columns={columns}
-                                data={productos}
+                                data={filteredData}
                                 progressPending={pendiente}
                                 pagination
                                 paginationComponentOptions={paginationComponentOptions}

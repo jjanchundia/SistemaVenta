@@ -90,53 +90,44 @@ const EditarPerfil = () => {
     return (
         <>
             {!token && <Navigate to="/login" />}
-            {acceso == 1 ? (
-                <div>
-                    <Card>
-                        <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Perfil de Usuario</CardHeader>
-                        <CardBody>
-                            <Form>
-                                <Row>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="exampleEmail">Correo</Label>
-                                            <Input name="email" value={state.correo} placeholder="Ingrese su correo" type="email" />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="examplePassword">Contraseña</Label>
-                                            <Input
-                                                name="password"
-                                                value={state.clave}
-                                                placeholder="Ingrese su contraseña"
-                                                type="password"
-                                            />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="exampleAddress">Usuario</Label>
-                                            <Input name="nombre" value={state.nombre} placeholder="Ingrese su nombre de usuario" />
-                                        </FormGroup>
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormGroup>
-                                            <Label for="exampleAddress2">Teléfono</Label>
-                                            <Input name="telefono" value={state.telefono} placeholder="Ingrese teléfono" />
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Button>Sign in</Button>
-                            </Form>
-                        </CardBody>
-                    </Card>
-                </div>
-            ) : (
-                <Navigate to="/noDisponible" />
-            )}
+            <div>
+                <Card>
+                    <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Perfil de Usuario</CardHeader>
+                    <CardBody>
+                        <Form>
+                            <Row>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="exampleEmail">Correo</Label>
+                                        <Input name="email" value={state.correo} placeholder="Ingrese su correo" type="email" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="examplePassword">Contraseña</Label>
+                                        <Input name="password" value={state.clave} placeholder="Ingrese su contraseña" type="password" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="exampleAddress">Usuario</Label>
+                                        <Input name="nombre" value={state.nombre} placeholder="Ingrese su nombre de usuario" />
+                                    </FormGroup>
+                                </Col>
+                                <Col md={6}>
+                                    <FormGroup>
+                                        <Label for="exampleAddress2">Teléfono</Label>
+                                        <Input name="telefono" value={state.telefono} placeholder="Ingrese teléfono" />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Button>Sign in</Button>
+                        </Form>
+                    </CardBody>
+                </Card>
+            </div>
         </>
     );
 };

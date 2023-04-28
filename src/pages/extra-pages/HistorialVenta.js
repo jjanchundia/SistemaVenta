@@ -1,22 +1,7 @@
-import {
-    Card,
-    CardBody,
-    CardHeader,
-    Col,
-    FormGroup,
-    Input,
-    Label,
-    Row,
-    Table,
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter
-} from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, FormGroup, Input, Label, Row, Table, Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import Swal from 'sweetalert2';
-
+import logo from './../../assets/images/storeVentas.png';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -32,7 +17,16 @@ const HistorialVenta = () => {
     const [buscarPor, setBuscarPor] = useState('fecha');
 
     const [verModal, setVerModal] = useState(false);
-    const [detalleVenta, setDetalleVenta] = useState({});
+    const [detalleVenta, setDetalleVenta] = useState({
+        empresa: {
+            direccion: '',
+            email: '',
+            idEmpresa: 0,
+            nombre: '',
+            rucDocumento: '',
+            telefono: ''
+        }
+    });
 
     const [ventas, setVentas] = useState([]);
 
@@ -62,6 +56,7 @@ const HistorialVenta = () => {
     };
 
     const mostrarModal = (data) => {
+        console.log(data);
         setDetalleVenta(data);
         setVerModal(!verModal);
     };
@@ -187,8 +182,54 @@ const HistorialVenta = () => {
 
             <Modal style={{ top: '10%' }} size="lg" isOpen={verModal}>
                 <div id="imp" ref={componentRef}>
-                    <ModalHeader>Detalle Venta</ModalHeader>
                     <ModalBody>
+                        <Row>
+                            <Col sm={9}>
+                                <h5>Datos de la Empresa</h5>
+                            </Col>
+                            <Col sm={3}>
+                                <img src={logo} alt="storeVentas" width="120" style={{ alignItems: 'right' }} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Empresa:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.nombre} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Ruc:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.rucDocumento} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Teléfono:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.telefono} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <FormGroup>
+                                    <Label>Dirección:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.direccion} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={6}>
+                                <FormGroup>
+                                    <Label>Correo:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.email} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <hr></hr>
+                        {/* <ModalHeader>Detalle Venta</ModalHeader> */}
+                        <div>
+                            <h5>Detalle de la Venta</h5>
+                        </div>
                         <Row>
                             <Col sm={4}>
                                 <FormGroup>

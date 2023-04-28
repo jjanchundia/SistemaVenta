@@ -146,9 +146,9 @@ const Profile = () => {
                                             <Grid container justifyContent="space-between" alignItems="center">
                                                 <Grid item>
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
-                                                        <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                                                        {/* <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} /> */}
                                                         <Stack>
-                                                            <Typography variant="h6"> {nombreUsuario}</Typography>
+                                                            <Typography variant="h6">Bienvenido {nombreUsuario}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
                                                                 {/* UI/UX Designer */}
                                                                 Bienvenido al Sistema
@@ -181,7 +181,7 @@ const Profile = () => {
                                                                 textTransform: 'capitalize'
                                                             }}
                                                             icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                                                            label="Profile"
+                                                            label="Perfil"
                                                             {...a11yProps(0)}
                                                         />
                                                         {/* <Tab

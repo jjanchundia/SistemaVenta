@@ -1,6 +1,20 @@
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Button,
+    Col,
+    Alert,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Label,
+    Input,
+    FormGroup,
+    ModalFooter
+} from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
@@ -193,16 +207,16 @@ const Categoria = () => {
     };
 
     const style = {
-        // position: 'absolute',
         top: '10%'
-        // left: '10%'
-        // transform: 'translate(-50%, -50%)',
-        // width: 10,
-        // bgcolor: 'background.paper',
-        // border: '2px solid #000',
-        // boxShadow: 24,
-        // p: 4
     };
+
+    const [searchText, setSearchText] = useState('');
+
+    const handleSearch = (event) => {
+        setSearchText(event.target.value);
+    };
+
+    const filteredData = categorias.filter((item) => item.descripcion.toLowerCase().includes(searchText.toLowerCase()));
 
     return (
         <>
@@ -216,9 +230,23 @@ const Categoria = () => {
                                 <PlusCircleOutlined /> Nueva Categoria
                             </Button>
                             <hr></hr>
+                            <FormGroup row>
+                                <Label for="exampleEmail" md={2}>
+                                    Búsqueda:
+                                </Label>
+                                <Col sm={4} style={{ align: 'left' }}>
+                                    <Input
+                                        name="email"
+                                        value={searchText}
+                                        onChange={handleSearch}
+                                        placeholder="Ingrese su búsqueda"
+                                        type="email"
+                                    />
+                                </Col>
+                            </FormGroup>
                             <DataTable
                                 columns={columns}
-                                data={categorias}
+                                data={filteredData}
                                 progressPending={pendiente}
                                 pagination
                                 paginationComponentOptions={paginationComponentOptions}

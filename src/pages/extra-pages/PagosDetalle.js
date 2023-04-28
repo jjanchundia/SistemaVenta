@@ -5,7 +5,6 @@ import {
     CardBody,
     CardHeader,
     Button,
-    Alert,
     Modal,
     ModalHeader,
     Row,
@@ -17,10 +16,10 @@ import {
     ModalFooter,
     Table
 } from 'reactstrap';
-import Swal from 'sweetalert2';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
-import ReactToPrint from '../../../node_modules/react-to-print/lib/index';
+import { PrinterOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
+import logo from './../../assets/images/storeVentas.png';
 
 const PagosDetalle = () => {
     let token = sessionStorage.getItem('token');
@@ -113,7 +112,17 @@ const PagosDetalle = () => {
 
     const [verModal, setVerModal] = useState(false);
 
-    const [detalleVenta, setDetalleVenta] = useState({});
+    const [detalleVenta, setDetalleVenta] = useState({
+        empresa: {
+            direccion: '',
+            email: '',
+            idEmpresa: 0,
+            nombre: '',
+            rucDocumento: '',
+            telefono: ''
+        }
+    });
+
     const abrirEditarModal = (data) => {
         console.log(data);
         // history('/pagoConfirmar', { state: { data: data } });
@@ -151,8 +160,53 @@ const PagosDetalle = () => {
             </div> */}
             <Modal style={{ top: '10%' }} size="lg" isOpen={verModal}>
                 <div id="imp" ref={componentRef}>
-                    <ModalHeader>Detalle de Pago</ModalHeader>
                     <ModalBody>
+                        <Row>
+                            <Col sm={9}>
+                                <h5>Datos de la Empresa</h5>
+                            </Col>
+                            <Col sm={3}>
+                                <img src={logo} alt="storeVentas" width="120" style={{ alignItems: 'right' }} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Empresa:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.nombre} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Ruc:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.rucDocumento} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={4}>
+                                <FormGroup>
+                                    <Label>Teléfono:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.telefono} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <FormGroup>
+                                    <Label>Dirección:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.direccion} />
+                                </FormGroup>
+                            </Col>
+                            <Col sm={6}>
+                                <FormGroup>
+                                    <Label>Correo:</Label>
+                                    <Input bsSize="sm" disabled value={detalleVenta.empresa.email} />
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <hr></hr>
+                        <div>
+                            <h5>Detalle del Pago</h5>
+                        </div>
                         <Row>
                             <Col sm={4}>
                                 <FormGroup>
@@ -248,11 +302,11 @@ const PagosDetalle = () => {
                 </div>
                 <ModalFooter>
                     {/* <ReactToPrint trigger={() => <button>Imprimir PDF</button>} content={() => this.componentRef} /> */}
-                    <Button size="sm" color="primary" onClick={handlePrinf}>
-                        Imprimir
+                    <Button size="md" color="primary" onClick={handlePrinf}>
+                        <PrinterOutlined />
                     </Button>
-                    <Button size="sm" color="danger" onClick={() => setVerModal(!verModal)}>
-                        Cerrar
+                    <Button size="md" color="danger" onClick={() => setVerModal(!verModal)}>
+                        <CloseCircleOutlined />
                     </Button>
                 </ModalFooter>
             </Modal>

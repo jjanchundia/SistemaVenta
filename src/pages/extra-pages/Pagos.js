@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
-import Swal from 'sweetalert2';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { DollarOutlined, UnorderedListOutlined } from '@ant-design/icons';
 
 const modeloMarca = {
     idMarca: 0,
@@ -113,17 +113,17 @@ const Pago = () => {
                 // return <span className="badge badge-info p-2">{row.esActivo ? 'Activo' : 'No Activo'}</span>;
                 return row.cuotaPendientes == 0 ? (
                     <div>
-                        <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => detallePago(row)}>
-                            <i className="fas fa-trash-alt"></i>Detalle
+                        <Button color="danger" title="Detalle" size="md" className="mr-2" onClick={() => detallePago(row)}>
+                            <UnorderedListOutlined />
                         </Button>
                     </div>
                 ) : (
                     <div>
-                        <Button color="primary" size="sm" className="badge badge-info p-2" onClick={() => cancelarPago(row)}>
-                            <i className="bi bi-calculator"></i>Pagar
+                        <Button color="primary" title="Pagar Cuota" size="md" className="mr-2" onClick={() => cancelarPago(row)}>
+                            <DollarOutlined />
                         </Button>
-                        <Button color="danger" size="sm" className="badge badge-danger p-2" onClick={() => detallePago(row)}>
-                            <i className="fas fa-trash-alt"></i>Detalle
+                        <Button color="danger" title="Detalle" size="md" className="mr-2" onClick={() => detallePago(row)}>
+                            <UnorderedListOutlined />
                         </Button>
                     </div>
                 );
@@ -199,28 +199,6 @@ const Pago = () => {
         } else {
             alert('error al guardar');
         }
-    };
-
-    const eliminarMarca = async (id) => {
-        Swal.fire({
-            title: 'Esta seguro?',
-            text: 'Desesa eliminar esta Marca',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, continuar',
-            cancelButtonText: 'No, volver'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const response = fetch('http://localhost:5158/api/Marca/Eliminar/' + id, { method: 'DELETE' }).then((response) => {
-                    if (response.ok) {
-                        obtenerPagos();
-                        Swal.fire('Eliminado!', 'La Marca fue eliminada.', 'success');
-                    }
-                });
-            }
-        });
     };
 
     const style = {

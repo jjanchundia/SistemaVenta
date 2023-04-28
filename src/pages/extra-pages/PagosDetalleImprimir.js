@@ -1,25 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
-import DataTable from 'react-data-table-component';
-import {
-    Card,
-    CardBody,
-    CardHeader,
-    Button,
-    Alert,
-    Modal,
-    ModalHeader,
-    Row,
-    Col,
-    ModalBody,
-    Label,
-    Input,
-    FormGroup,
-    ModalFooter,
-    Table
-} from 'reactstrap';
-import Swal from 'sweetalert2';
-import { useNavigate, Navigate, useLocation } from 'react-router-dom';
-import { useReactToPrint } from '../../../node_modules/react-to-print/lib/index';
+import { ModalHeader } from 'reactstrap';
 
 const PagosDetalle = ({ data }) => {
     console.log(data);

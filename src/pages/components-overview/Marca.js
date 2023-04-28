@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { Card, CardBody, CardHeader, Button, Alert, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
+import { Card, CardBody, CardHeader, Button, Col, Modal, ModalHeader, ModalBody, Label, Input, FormGroup, ModalFooter } from 'reactstrap';
 import Swal from 'sweetalert2';
 import { Navigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
@@ -171,6 +171,14 @@ const Marca = () => {
         top: '10%'
     };
 
+    const [searchText, setSearchText] = useState('');
+
+    const handleSearch = (event) => {
+        setSearchText(event.target.value);
+    };
+
+    const filteredData = Marcas.filter((item) => item.nombreMarca.toLowerCase().includes(searchText.toLowerCase()));
+
     return (
         <>
             {!token && <Navigate to="/login" />}
@@ -183,9 +191,23 @@ const Marca = () => {
                                 <PlusCircleOutlined /> Nueva Marca
                             </Button>
                             <hr></hr>
+                            <FormGroup row>
+                                <Label for="exampleEmail" md={2}>
+                                    Búsqueda:
+                                </Label>
+                                <Col sm={4} style={{ align: 'left' }}>
+                                    <Input
+                                        name="email"
+                                        value={searchText}
+                                        onChange={handleSearch}
+                                        placeholder="Ingrese su búsqueda"
+                                        type="email"
+                                    />
+                                </Col>
+                            </FormGroup>
                             <DataTable
                                 columns={columns}
-                                data={Marcas}
+                                data={filteredData}
                                 progressPending={pendiente}
                                 pagination
                                 paginationComponentOptions={paginationComponentOptions}
