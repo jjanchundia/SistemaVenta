@@ -1,35 +1,19 @@
 import { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import {
-    Form,
-    Card,
-    CardBody,
-    CardHeader,
-    Button,
-    Alert,
-    Row,
-    Col,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    Label,
-    Input,
-    FormGroup,
-    ModalFooter
-} from 'reactstrap';
-import Swal from 'sweetalert2';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Form, Card, CardBody, CardHeader, Button, Row, Col, Label, Input, FormGroup } from 'reactstrap';
+import { Navigate } from 'react-router-dom';
 
-const modeloCategoria = {
-    idCategoria: 0,
-    descripcion: '',
-    esActivo: true
+const modeloUsuario = {
+    idUsuario: 0,
+    nombre: '',
+    correo: '',
+    telefono: '',
+    clave: ''
 };
 
 const EditarPerfil = () => {
     // const { state } = useLocation();
     let token = sessionStorage.getItem('token');
-    let acceso = sessionStorage.getItem('UsuarioLogin');
+    const [Usuario, setUsuario] = useState(modeloUsuario);
     const [state, setState] = useState([]);
     console.log(state);
 
@@ -40,48 +24,38 @@ const EditarPerfil = () => {
         if (response.ok) {
             let data = await response.json();
             setState(data[0]);
+            setUsuario(data[0]);
         }
 
-        console.log(state);
-        // history('/editarPerfil', { state: { data: Perfil } });
+        console.log(Usuario);
     };
 
     const handleChange = (e) => {
         let value = e.target.nodeName === 'SELECT' ? (e.target.value == 'true' ? true : false) : e.target.value;
 
-        setCategoria({
-            ...categoria,
+        setUsuario({
+            ...Usuario,
             [e.target.name]: value
         });
     };
 
     useEffect(() => {
         obternerperfil();
-        // console.log(categorias);
     }, []);
 
     const guardarCambios = async () => {
         let response;
-        if (categoria.idCategoria == 0) {
-            response = await fetch('http://localhost:5158/api/categoria/Guardar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify(categoria)
-            });
-        } else {
-            response = await fetch('http://localhost:5158/api/categoria/Editar', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify(categoria)
-            });
-        }
+        response = await fetch('http://localhost:5158/api/usuario/Editar', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(Usuario)
+        });
 
         if (response.ok) {
-            // await obtenerCategorias();
+            await obternerperfil();
+            setUsuario(modeloUsuario);
         } else {
             alert('error al guardar');
         }
@@ -99,13 +73,25 @@ const EditarPerfil = () => {
                                 <Col md={6}>
                                     <FormGroup>
                                         <Label for="exampleEmail">Correo</Label>
-                                        <Input name="email" value={state.correo} placeholder="Ingrese su correo" type="email" />
+                                        <Input
+                                            name="correo"
+                                            value={Usuario.correo}
+                                            onChange={handleChange}
+                                            placeholder="Ingrese su correo"
+                                            type="email"
+                                        />
                                     </FormGroup>
                                 </Col>
                                 <Col md={6}>
                                     <FormGroup>
                                         <Label for="examplePassword">Contraseña</Label>
-                                        <Input name="password" value={state.clave} placeholder="Ingrese su contraseña" type="password" />
+                                        <Input
+                                            name="clave"
+                                            value={Usuario.clave}
+                                            onChange={handleChange}
+                                            placeholder="Ingrese su contraseña"
+                                            type="password"
+                                        />
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -113,17 +99,29 @@ const EditarPerfil = () => {
                                 <Col md={6}>
                                     <FormGroup>
                                         <Label for="exampleAddress">Usuario</Label>
-                                        <Input name="nombre" value={state.nombre} placeholder="Ingrese su nombre de usuario" />
+                                        <Input
+                                            name="nombre"
+                                            value={Usuario.nombre}
+                                            onChange={handleChange}
+                                            placeholder="Ingrese su nombre de usuario"
+                                        />
                                     </FormGroup>
                                 </Col>
                                 <Col md={6}>
                                     <FormGroup>
                                         <Label for="exampleAddress2">Teléfono</Label>
-                                        <Input name="telefono" value={state.telefono} placeholder="Ingrese teléfono" />
+                                        <Input
+                                            name="telefono"
+                                            value={Usuario.telefono}
+                                            onChange={handleChange}
+                                            placeholder="Ingrese teléfono"
+                                        />
                                     </FormGroup>
                                 </Col>
                             </Row>
-                            <Button>Sign in</Button>
+                            <Button className="btn btn-success" onClick={guardarCambios}>
+                                Actualizar
+                            </Button>
                         </Form>
                     </CardBody>
                 </Card>

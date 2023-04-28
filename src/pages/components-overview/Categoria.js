@@ -58,25 +58,6 @@ const Categoria = () => {
         console.log(categorias);
     }, []);
 
-    const style2 = {
-        position: 'absolute',
-        backgroundColor: 'badge badge-info p-2',
-        width: 60,
-        bgcolor: 'background.paper',
-        border: '2px solid #000000',
-        p: 4
-    };
-
-    const style3 = {
-        position: 'absolute',
-        color: 'badge badge-info p-2',
-        width: 80,
-        bgcolor: 'background.paper',
-        border: '2px solid #ff0000',
-        backgroundColor: 'red',
-        p: 4
-    };
-
     const columns = [
         {
             name: 'Descripcion',

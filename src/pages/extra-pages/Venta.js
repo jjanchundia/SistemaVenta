@@ -1,10 +1,10 @@
 import { Card, CardBody, CardHeader, Col, FormGroup, Input, InputGroup, InputGroupText, Label, Row, Table, Button } from 'reactstrap';
 import Swal from 'sweetalert2';
 import Autosuggest from 'react-autosuggest';
-import Autosuggest2 from 'react-autosuggest';
 import { useContext, useState } from 'react';
 import '../css/Venta.css';
-// import { UserContext } from '../context/UserProvider';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { Navigate } from 'react-router-dom';
 
 const modelo = {
@@ -25,7 +25,10 @@ const Venta = () => {
 
     const [a_Clientes, setA_Clientes] = useState([]);
     const [a_BusquedaCliente, setA_BusquedaCliente] = useState('');
-
+    const [TipoVenta, setTipoVenta] = useState('Efectivo');
+    const [NumeroTarjeta, setNumeroTarjeta] = useState('');
+    const [CodigoSeguridad, setCodigoSeguridad] = useState('');
+    const [FechaCaducidad, setFechaCaducidad] = useState();
     const [tipoDocumento, setTipoDocumento] = useState('Nota de Ventas');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
@@ -41,6 +44,10 @@ const Venta = () => {
         setTotal(0);
         setSubTotal(0);
         setIgv(0);
+        setCodigoSeguridad('');
+        setNumeroTarjeta('');
+        setTipoDocumento('');
+        setFechaCaducidad('');
     };
 
     //para obtener la lista de sugerencias
@@ -228,6 +235,10 @@ const Venta = () => {
             subTotal: parseFloat(subTotal),
             igv: parseFloat(igv),
             total: parseFloat(total),
+            tipoVenta: TipoVenta,
+            numeroTarjeta: NumeroTarjeta,
+            fechaCaducidad: FechaCaducidad,
+            codigoSeguridad: CodigoSeguridad,
             listaProductos: productos
         };
 
@@ -372,6 +383,64 @@ const Venta = () => {
                                             </InputGroup>
                                         </Col>
                                     </Row>
+                                    <Row className="mb-2">
+                                        <Col sm={12}>
+                                            <InputGroup size="sm">
+                                                <InputGroupText>Método de Pago:</InputGroupText>
+                                                <Input
+                                                    type="select"
+                                                    className="form-control form-control-sm"
+                                                    bsSize="sm"
+                                                    onChange={(e) => setTipoVenta(e.target.value)}
+                                                    value={TipoVenta}
+                                                >
+                                                    <option value="Efectivo">Efectivo</option>
+                                                    <option value="Tarjeta">Tarjeta</option>
+                                                </Input>
+                                            </InputGroup>
+                                        </Col>
+                                    </Row>
+                                    {TipoVenta == 'Efectivo' ? (
+                                        <></>
+                                    ) : (
+                                        <div>
+                                            <Col sm={12}>
+                                                <FormGroup>
+                                                    <InputGroupText>Número Tarjeta:</InputGroupText>
+                                                    <Input
+                                                        maxLength={16}
+                                                        bsSize="sm"
+                                                        onChange={(e) => setNumeroTarjeta(e.target.value)}
+                                                        value={NumeroTarjeta}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col sm={12}>
+                                                <FormGroup>
+                                                    <InputGroupText>Fecha Caducidad:</InputGroupText>
+                                                    <DatePicker
+                                                        maxLength={10}
+                                                        className="form-control form-control-sm"
+                                                        selected={FechaCaducidad}
+                                                        onChange={(date) => setFechaCaducidad(date)}
+                                                        dateFormat="dd/MM/yyyy"
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col sm={12}>
+                                                <FormGroup>
+                                                    <InputGroupText>Código Seguridad:</InputGroupText>
+                                                    <Input
+                                                        bsSize="sm"
+                                                        maxLength={4}
+                                                        onChange={(e) => setCodigoSeguridad(e.target.value)}
+                                                        value={CodigoSeguridad}
+                                                        maxtLength={3}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                        </div>
+                                    )}
                                     <Row className="mb-2">
                                         <Col sm={12}>
                                             <InputGroup size="sm">
