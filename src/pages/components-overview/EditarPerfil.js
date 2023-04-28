@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Form, Card, CardBody, CardHeader, Button, Row, Col, Label, Input, FormGroup } from 'reactstrap';
-import { Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const modeloUsuario = {
     idUsuario: 0,
@@ -11,7 +12,7 @@ const modeloUsuario = {
 };
 
 const EditarPerfil = () => {
-    // const { state } = useLocation();
+    const history = useNavigate();
     let token = sessionStorage.getItem('token');
     const [Usuario, setUsuario] = useState(modeloUsuario);
     const [state, setState] = useState([]);
@@ -54,8 +55,8 @@ const EditarPerfil = () => {
         });
 
         if (response.ok) {
-            await obternerperfil();
-            setUsuario(modeloUsuario);
+            Swal.fire('Exito!', 'Perfil actualizado correctamente.', 'success');
+            history('/usuario');
         } else {
             alert('error al guardar');
         }
@@ -68,61 +69,46 @@ const EditarPerfil = () => {
                 <Card>
                     <CardHeader style={{ backgroundColor: '#4e73df', color: 'white' }}>Perfil de Usuario</CardHeader>
                     <CardBody>
-                        <Form>
-                            <Row>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="exampleEmail">Correo</Label>
-                                        <Input
-                                            name="correo"
-                                            value={Usuario.correo}
-                                            onChange={handleChange}
-                                            placeholder="Ingrese su correo"
-                                            type="email"
-                                        />
-                                    </FormGroup>
-                                </Col>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="examplePassword">Contraseña</Label>
-                                        <Input
-                                            name="clave"
-                                            value={Usuario.clave}
-                                            onChange={handleChange}
-                                            placeholder="Ingrese su contraseña"
-                                            type="password"
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="exampleAddress">Usuario</Label>
-                                        <Input
-                                            name="nombre"
-                                            value={Usuario.nombre}
-                                            onChange={handleChange}
-                                            placeholder="Ingrese su nombre de usuario"
-                                        />
-                                    </FormGroup>
-                                </Col>
-                                <Col md={6}>
-                                    <FormGroup>
-                                        <Label for="exampleAddress2">Teléfono</Label>
-                                        <Input
-                                            name="telefono"
-                                            value={Usuario.telefono}
-                                            onChange={handleChange}
-                                            placeholder="Ingrese teléfono"
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Button className="btn btn-success" onClick={guardarCambios}>
-                                Actualizar
-                            </Button>
-                        </Form>
+                        <Row>
+                            <Col md={6}>
+                                <Label for="exampleEmail">Correo</Label>
+                                <Input
+                                    name="correo"
+                                    value={Usuario.correo}
+                                    onChange={handleChange}
+                                    placeholder="Ingrese su correo"
+                                    type="email"
+                                />
+                            </Col>
+                            <Col md={6}>
+                                <Label for="examplePassword">Contraseña</Label>
+                                <Input
+                                    name="clave"
+                                    value={Usuario.clave}
+                                    onChange={handleChange}
+                                    placeholder="Ingrese su contraseña"
+                                    type="password"
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={6}>
+                                <Label for="exampleAddress">Usuario</Label>
+                                <Input
+                                    name="nombre"
+                                    value={Usuario.nombre}
+                                    onChange={handleChange}
+                                    placeholder="Ingrese su nombre de usuario"
+                                />{' '}
+                            </Col>
+                            <Col md={6}>
+                                <Label for="exampleAddress2">Teléfono</Label>
+                                <Input name="telefono" value={Usuario.telefono} onChange={handleChange} placeholder="Ingrese teléfono" />
+                            </Col>
+                        </Row>
+                        <Button className="btn btn-success" onClick={guardarCambios}>
+                            Actualizar
+                        </Button>
                     </CardBody>
                 </Card>
             </div>

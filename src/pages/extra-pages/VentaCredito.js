@@ -29,7 +29,7 @@ const VentaCredito = () => {
     const [TipoVenta, setTipoVenta] = useState('Efectivo');
     const [NumeroTarjeta, setNumeroTarjeta] = useState('');
     const [CodigoSeguridad, setCodigoSeguridad] = useState('');
-    const [FechaCaducidad, setFechaCaducidad] = useState('');
+    const [FechaCaducidad, setFechaCaducidad] = useState();
     const [tipoDocumento, setTipoDocumento] = useState('Nota de Ventas');
     const [productos, setProductos] = useState([]);
     const [total, setTotal] = useState(0);
@@ -233,7 +233,7 @@ const VentaCredito = () => {
             Swal.fire('Opps!', 'No existen productos', 'error');
             return;
         }
-
+        debugger;
         let VentaCredito = {
             tipoDocumento: tipoDocumento,
             idUsuario: token,
